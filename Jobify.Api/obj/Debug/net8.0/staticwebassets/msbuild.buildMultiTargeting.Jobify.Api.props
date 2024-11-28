@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Jobify.Api.props" />
+</Project>

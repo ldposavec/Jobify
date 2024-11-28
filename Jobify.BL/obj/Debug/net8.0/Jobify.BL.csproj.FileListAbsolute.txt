@@ -1,0 +1,14 @@
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\bin\Debug\net8.0\Jobify.BL.deps.json
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\bin\Debug\net8.0\Jobify.BL.dll
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\bin\Debug\net8.0\Jobify.BL.pdb
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.GeneratedMSBuildEditorConfig.editorconfig
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.AssemblyInfoInputs.cache
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.AssemblyInfo.cs
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.csproj.CoreCompileInputs.cache
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.dll
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\refint\Jobify.BL.dll
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.pdb
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\ref\Jobify.BL.dll
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\bin\Debug\net8.0\Jobify.BL.runtimeconfig.json
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.csproj.AssemblyReference.cache
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.BL\obj\Debug\net8.0\Jobify.BL.genruntimeconfig.cache
