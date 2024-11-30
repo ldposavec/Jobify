@@ -1,0 +1,38 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# IDE-specific settings
+.vscode/
+.idea/
+
+# Logs and crash reports
+*.log
+
+# Dependency directories
+node_modules/
+wwwroot/lib/
+
+# Publish output
+publish/
+out/
+
+# Sensitive files
+appsettings.json
+appsettings.*.json
+
+# Generated files
+*.g.*
+*.razor.g.*
+
+# Rider IDE files
+*.iml
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
