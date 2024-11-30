@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AutoMapper.Configuration.Annotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Jobify.Api.DTOs
 {
     public class FirmDTO
     {
+        [JsonIgnore]
         public int Id { get; set; }
 
         [Required]

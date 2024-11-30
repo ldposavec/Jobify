@@ -44,3 +44,8 @@ C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Job
 C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\obj\Debug\net8.0\Jobify.Api.genruntimeconfig.cache
 C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\obj\Debug\net8.0\ref\Jobify.Api.dll
 C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\bin\Debug\net8.0\AutoMapper.dll
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\obj\Debug\net8.0\Jobify.Api.sourcelink.json
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\bin\Debug\net8.0\selenium-manager\linux\selenium-manager
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\bin\Debug\net8.0\selenium-manager\macos\selenium-manager
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\bin\Debug\net8.0\selenium-manager\windows\selenium-manager.exe
+C:\nela master\antonela\Nela master 2021\algebra\3. godina\PI\projekt\Jobify\Jobify.Api\bin\Debug\net8.0\WebDriver.dll

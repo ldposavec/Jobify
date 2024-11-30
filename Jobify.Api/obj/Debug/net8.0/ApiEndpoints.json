@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "Jobify.Api.Controllers.EmployerController",
+    "Method": "RegisterEmployer",
+    "RelativePath": "api/Employer/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerDto",
+        "Type": "Jobify.Api.DTOs.EmployerRegistrationDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Jobify.Api.Controllers.EmployerController",
+    "Method": "ValidateOIB",
+    "RelativePath": "api/Employer/validate-oib",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oib",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Jobify.Api.Controllers.UserController",
     "Method": "Get",
     "RelativePath": "api/User",
@@ -115,15 +147,5 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "Jobify.Api.Controllers.UserController",
-    "Method": "TestMapping",
-    "RelativePath": "api/User/test-mapping",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
   }
 ]

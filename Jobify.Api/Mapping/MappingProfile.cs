@@ -15,6 +15,7 @@ namespace Jobify.Api.Mapping
             CreateMap<Firm, FirmDTO>().ReverseMap();
             CreateMap<JobAd, JobAdDTO>().ReverseMap();
             CreateMap<Employer, EmployerDTO>().ReverseMap();            
+            CreateMap<Employer, EmployerRegistrationDTO>().ReverseMap();            
             
             CreateMap<JobApp, JobAppDTO>().ReverseMap();
             CreateMap<Student, StudentDTO>().ReverseMap();
