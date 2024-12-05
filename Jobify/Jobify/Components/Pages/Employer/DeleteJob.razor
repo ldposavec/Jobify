@@ -1,0 +1,78 @@
+﻿@page "/employer/deletejob"
+@using Jobify.BL.Providers
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Delete Job</PageTitle>
+
+<h3>DeleteJob</h3>
+
+@* 
+<EditForm Model="jobAds" OnValidSubmit="HandleValidSubmit" FormName="jobAds">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <div class="form-group">
+            <label for="jobAds">Job Ad to delete:</label>
+            <InputSelect id="jobAds" class="form-control" @bind-Value="jobAd.Id">
+                @foreach (var jobAd in jobAds)
+                {
+                    <option value="@jobAd.Id">@jobAd.Title</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+</EditForm> *@
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <label for="jobAdDelete">Job Ad to Delete:</label>
+        </div>
+            <div class="row">
+        <div class="col-3">
+            <select class="form-select mt-1" id="jobAdDelete" @bind="selectedJobAdId">
+                <option value="0">All Job Ads</option>
+                @foreach (var jobAd in jobAds)
+                {
+                    <option value="@jobAd.Id">@jobAd.Title</option>
+                }
+            </select>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-danger mt-1" @onclick="HandleValidSubmit">Delete</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+@code {
+    private List<JobAd> jobAds = new List<JobAd>();
+    private JobAd jobAdToDelete;
+    private int selectedJobAdId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DbQueryProvider.Init();
+        LoadJobAds();
+    }
+
+    private void LoadJobAds()
+    {
+        jobAds = DbQueryProvider.Service.GetAllJobAds();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        jobAdToDelete = jobAds.FirstOrDefault(j => j.Id == selectedJobAdId);
+        if (jobAdToDelete is not null)
+        {
+            Console.WriteLine("Title: " + jobAdToDelete.Title);
+            DbQueryProvider.Service.DeleteJobAd(jobAdToDelete.Id);
+            jobAds.Remove(jobAdToDelete);
+            LoadJobAds();
+            await JSRuntime.InvokeVoidAsync("alert", "Job Ad deleted successfully!");
+        }
+    }
+}

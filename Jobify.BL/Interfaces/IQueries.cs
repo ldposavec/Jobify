@@ -9,8 +9,17 @@ namespace Jobify.BL.Interfaces
 {
     public interface IQueries
     {
-        // Insert methods here
+        // Create methods here
         void AddNewJobAd(int employerId, string title, string description, decimal salary, DateTime createdAt, int statusId);
         void AddNewStatus(string name);
+
+        // Retrieve methods here
+        List<JobAd> GetAllJobAds();
+
+        // Update methods here
+        void UpdateJobAd(JobAd jobAd);
+        // Delete methods here
+        void DeleteJobAd(int id);
+        void DeleteStatus(int id);
     }
 }

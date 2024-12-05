@@ -43,5 +43,30 @@ namespace Jobify.BL.Database
             _context.Statuses.Add(status);
             _context.SaveChanges();
         }
+
+        public void DeleteJobAd(int id)
+        {
+            JobAd jobAd = _context.JobAds.Find(id);
+            _context.JobAds.Remove(jobAd);
+            _context.SaveChanges();
+        }
+
+        public void DeleteStatus(int id)
+        {
+            Status status = _context.Statuses.Find(id);
+            _context.Statuses.Remove(status);
+            _context.SaveChanges();
+        }
+
+        public List<JobAd> GetAllJobAds()
+        {
+            return _context.JobAds.ToList();
+        }
+
+        public void UpdateJobAd(JobAd jobAd)
+        {
+            _context.JobAds.Update(jobAd);
+            _context.SaveChanges();
+        }
     }
 }
