@@ -19,10 +19,19 @@ builder.Services.AddScoped<IWebDriver>(sp =>
     return new ChromeDriver();
 });
 
+//builder.Services.AddDbContext<JobifyContext>(options =>
+//{
+//    options.UseNpgsql("name=ConnectionStrings:AppConnStr");
+//});
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+// Get connection string from configuration
+var connectionString = builder.Configuration.GetConnectionString("AppConnStr")
+                      ?? throw new InvalidOperationException("Connection string 'AppConnStr' not found.");
+
+// Register the DbContext with DI
 builder.Services.AddDbContext<JobifyContext>(options =>
-{
-    options.UseNpgsql("name=ConnectionStrings:AppConnStr");
-});
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<OIBValidationService>();

@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Jobify.Client",
   "resources": {
-    "hash": "sha256-LyLIoMNjaxe53QSMO/vzpb0bf1kljLkKC40lEIfa+BY=",
+    "hash": "sha256-q7DtEQodaGBllP6VwQ8WbbbbM6dzS0nIun2diaUXPoo=",
     "jsModuleNative": {
       "dotnet.native.8.0.11.vxf5goy1ut.js": "sha256-VdKq87/z5NIxZKmuM+fv38XF+RcEb/bg3jVBwQSfwP4="
     },
@@ -210,10 +210,10 @@
       "mscorlib.wasm": "sha256-04e4k5XU8HWGB/dq/2+j84xzzGPflTs0IYWI0OxogVc=",
       "netstandard.wasm": "sha256-gnGZURPnoSmjXuYNCOJi5tt8qn2LRImWgue1Ru3/TDQ=",
       "System.Private.CoreLib.wasm": "sha256-6w3jYr0arcp8jnt4aeqh+AmqrLA6q7jl9rQYAwLzE0M=",
-      "Jobify.Client.wasm": "sha256-344T4G6Px9bn+FUaAxkcHKDGjT2nqHE0AqN1YEL9JP4="
+      "Jobify.Client.wasm": "sha256-xEzq+9lP8mClrZ/cwpnG7RaK/7CphoSwRhi3VR7eWxs="
     },
     "pdb": {
-      "Jobify.Client.pdb": "sha256-mDoAsTiDeMqUp2KAKHGly7ZplhkeLXWkfKSwwKZ+JsQ="
+      "Jobify.Client.pdb": "sha256-kLIxV9kmRG3WzbffrPEFmOHXs5/JNURR4gzsxISKSG0="
     }
   },
   "cacheBootResources": true,

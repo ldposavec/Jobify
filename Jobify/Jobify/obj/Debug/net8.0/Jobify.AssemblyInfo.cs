@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Jobify")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53bcc0d96dbe66ca423a05829fff3cf5361bd726")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fcf10d0822b6d14ecee89ab09e62e42df652579")]
 [assembly: System.Reflection.AssemblyProductAttribute("Jobify")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Jobify")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

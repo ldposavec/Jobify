@@ -38,7 +38,8 @@ public partial class JobifyContext : DbContext
     public virtual DbSet<UserType> UserTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
+    //=> optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
+    => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Jobify");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,3 +1,4 @@
+using Jobify.BL.DALModels;
 using Jobify.Client.Pages;
 using Jobify.Components;
 using Jobify.Components.Account;
@@ -25,10 +26,19 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+//builder.Services.AddDbContext<JobifyContext>(options =>
+//{
+//    options.UseNpgsql("name=ConnectionStrings:AppConnStr");
+//});
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .AddEnvironmentVariables();
+var connectionString = builder.Configuration.GetConnectionString("AppConnStr") ?? throw new InvalidOperationException("Connection string 'AppConnStr' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+Console.WriteLine(builder.Configuration.GetConnectionString("AppConnStr"));
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
