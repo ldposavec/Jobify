@@ -3,8 +3,52 @@
   "WorkspaceRootPath": "G:\\Games\\VS Repository\\Jobify\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\pages\\employer\\createjob.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\pages\\employer\\createjob.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\pages\\error.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\pages\\error.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0FE925E0-1458-4D86-A673-355BEE29B25D}|Jobify\\Jobify.Client\\Jobify.Client.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify.client\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0FE925E0-1458-4D86-A673-355BEE29B25D}|Jobify\\Jobify.Client\\Jobify.Client.csproj|solutionrelative:jobify\\jobify.client\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0FE925E0-1458-4D86-A673-355BEE29B25D}|Jobify\\Jobify.Client\\Jobify.Client.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify.client\\persistentauthenticationstateprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0FE925E0-1458-4D86-A673-355BEE29B25D}|Jobify\\Jobify.Client\\Jobify.Client.csproj|solutionrelative:jobify\\jobify.client\\persistentauthenticationstateprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|solutionrelative:jobify\\jobify\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6B11B84C-9121-478D-8A13-590B7FD03C0E}|Jobify\\Jobify\\Jobify.csproj|g:\\games\\vs repository\\jobify\\jobify\\jobify\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -18,15 +62,144 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:12:43.984Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:12:39.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Error.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Error.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Pages\\Error.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Error.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Pages\\Error.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:09:39.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CreateJob.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Employer\\CreateJob.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Pages\\Employer\\CreateJob.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Employer\\CreateJob.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Pages\\Employer\\CreateJob.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:08:40.852Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\_Imports.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\_Imports.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:06:39.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "App.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\App.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\App.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\App.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\App.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:06:34.999Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Routes.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Routes.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Routes.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Routes.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Routes.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T13:06:29.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Weather.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Weather.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Pages\\Weather.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Weather.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Pages\\Weather.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T12:19:04.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Home.razor",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Components\\Pages\\Home.razor",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "Jobify\\Jobify\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-03T12:17:15.496Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PersistentAuthenticationStateProvider.cs",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify.Client\\PersistentAuthenticationStateProvider.cs",
+              "RelativeDocumentMoniker": "Jobify\\Jobify.Client\\PersistentAuthenticationStateProvider.cs",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify.Client\\PersistentAuthenticationStateProvider.cs",
+              "RelativeToolTip": "Jobify\\Jobify.Client\\PersistentAuthenticationStateProvider.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-03T12:12:25.932Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Jobify\\Jobify\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Jobify\\Jobify\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-03T12:12:05.476Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "Program.cs",
               "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify\\Program.cs",
               "RelativeDocumentMoniker": "Jobify\\Jobify\\Program.cs",
@@ -34,12 +207,11 @@
               "RelativeToolTip": "Jobify\\Jobify\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-29T19:46:31.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T19:46:31.205Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "Counter.razor",
               "DocumentMoniker": "G:\\Games\\VS Repository\\Jobify\\Jobify\\Jobify.Client\\Pages\\Counter.razor",
               "RelativeDocumentMoniker": "Jobify\\Jobify.Client\\Pages\\Counter.razor",
@@ -47,8 +219,11 @@
               "RelativeToolTip": "Jobify\\Jobify.Client\\Pages\\Counter.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-29T19:43:05.875Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T19:43:05.875Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }
