@@ -16,15 +16,17 @@ namespace Jobify.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<UserType> _userTypeRepository;
+        private readonly IRepository<Employer> _employerRepository;
         private readonly IRepository<Firm> _firmRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         public EmployerController(OIBValidationService oibValidationService, IMapper mapper, IRepository<User> userRepository,
-            IRepository<UserType> userTypeRepository, IRepository<Firm> firmRepository, IPasswordHasher<User> passwordHasher)
+            IRepository<UserType> userTypeRepository, IRepository<Employer> employerRepository, IRepository<Firm> firmRepository, IPasswordHasher<User> passwordHasher)
         {
             _oibValidationService = oibValidationService;
             _mapper = mapper;
             _userRepository = userRepository;
             _userTypeRepository = userTypeRepository;
+            _employerRepository = employerRepository;
             _firmRepository = firmRepository;
             _passwordHasher = passwordHasher;
         }
@@ -100,7 +102,9 @@ namespace Jobify.Api.Controllers
             employer.User.UserType = employerUserType;  
 
             _userRepository.Insert(employer.User);
+            _employerRepository.Insert(employer);
             _userRepository.Save();
+            _employerRepository.Save();
 
             return Ok("Employer registered successfully.");
         }

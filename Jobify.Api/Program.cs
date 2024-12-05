@@ -27,6 +27,7 @@ builder.Services.AddDbContext<JobifyContext>(options =>
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<OIBValidationService>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<IRepository<Employer>, EmployerRepository>();
 builder.Services.AddScoped<IRepository<Firm>, FirmRepository>();
 builder.Services.AddScoped<IRepository<UserType>, UserTypeRepository>();
 
