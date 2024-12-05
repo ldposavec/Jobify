@@ -1,0 +1,121 @@
+﻿@page "/employer/editjob"
+@using Jobify.BL.Providers
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Edit Job</PageTitle>
+
+<h3>EditJob</h3>
+
+<div class="d-flex justify-content-between">
+    <div>
+        <label for="jobAd">Job Ad to Edit:</label>
+        <select class="form-select mt-1" id="jobAdDelete" @bind="selectedJobAdId" @oninput=UpdateFields>
+            <option value="0">All Job Ads</option>
+            @foreach (var jobAd in jobAds)
+            {
+                <option value="@jobAd.Id">@jobAd.Title</option>
+            }
+        </select>
+    </div>
+</div>
+
+@* Edit *@
+<div class="container">
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-6">
+            <!-- Title Row -->
+            <div class="row mb-3">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <InputText id="title" class="form-control" required @bind-Value="newJobAd.Title" />
+                </div>
+            </div>
+
+            <!-- Salary and Status Row -->
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="salary">Salary</label>
+                        <div class="input-group">
+                            <InputNumber id="salary" class="form-control" @bind-Value="newJobAd.Salary" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <InputSelect id="status" class="form-control" @bind-Value="newJobAd.StatusId">
+                            <option value="1">Approved</option>
+                            <option value="2">Denied</option>
+                            <option value="3">Pending</option>
+                            <option value="4">Open</option>
+                            <option value="5">Closed</option>
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <!-- Submit Button -->
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary mt-3" @onclick=HandleValidSubmit>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-6">
+            <!-- Description -->
+            <div class="form-group h-100">
+                <label for="description">Description</label>
+                <InputTextArea id="description" class="form-control h-100" rows="10" required @bind-Value="newJobAd.Description" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private List<JobAd> jobAds = new List<JobAd>();
+    private JobAd jobAdToEdit;
+    private JobAd newJobAd = new JobAd();
+    private int selectedJobAdId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DbQueryProvider.Init();
+        LoadJobAds();
+    }
+
+    private void LoadJobAds()
+    {
+        jobAds = DbQueryProvider.Service.GetAllJobAds();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        jobAdToEdit = jobAds.FirstOrDefault(j => j.Id == selectedJobAdId);
+        if (jobAdToEdit != null)
+        {
+            jobAdToEdit.Title = newJobAd.Title;
+            jobAdToEdit.Description = newJobAd.Description;
+            jobAdToEdit.Salary = newJobAd.Salary;
+            jobAdToEdit.StatusId = newJobAd.StatusId;
+            DbQueryProvider.Service.UpdateJobAd(jobAdToEdit);
+            await JSRuntime.InvokeVoidAsync("alert", "Job Ad updated successfully!");
+        }
+    }
+
+    private void UpdateFields(ChangeEventArgs e)
+    {
+        selectedJobAdId = Convert.ToInt32(e.Value);
+        newJobAd = jobAds.FirstOrDefault(j => j.Id == selectedJobAdId);
+    }
+}

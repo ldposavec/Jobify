@@ -1,0 +1,150 @@
+﻿@page "/employer/createjob"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using Jobify.BL.Providers
+@using Jobify.BL.Repositories
+
+<PageTitle>Create Job</PageTitle>
+
+<h3>CreateJob</h3>
+
+<EditForm Model="newJobAd" OnValidSubmit="HandleValidSubmit" FormName="newJobAd">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+@*     <div class="container">
+        <div class="row">
+        <div class="col">
+            <div class="row">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <InputText id="title" class="form-control" @bind-Value="newJobAd.Title" />
+            </div>
+            <div class="row">
+            <div class="form-group" cols="3">
+                <label for="salary">Salary</label>
+                <div class="input-group">
+                    <InputNumber id="salary" class="form-control" @bind-Value="newJobAd.Salary" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">€</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <InputSelect id="status" class="form-control" @bind-Value="newJobAd.StatusId">
+                    <option value="1">Approved</option>
+                    <option value="2">Denied</option>
+                    <option value="3">Pending</option>
+                    <option value="4">Open</option>
+                    <option value="5">Closed</option>
+                </InputSelect>
+                    </div>
+                </div>
+            <div class="col">
+            <div class="form-group">
+                <label for="description">Description</label>
+                <InputTextArea id="description" class="form-control" rows="8" @bind-Value="newJobAd.Description" />
+                    </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </div> *@
+    <div class="container">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-6">
+                <!-- Title Row -->
+                <div class="row mb-3">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <InputText id="title" class="form-control" required @bind-Value="newJobAd.Title" />
+                    </div>
+                </div>
+
+                <!-- Salary and Status Row -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <div class="input-group">
+                                <InputNumber id="salary" class="form-control" @bind-Value="newJobAd.Salary" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">€</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <InputSelect id="status" class="form-control" @bind-Value="newJobAd.StatusId">
+                                <option value="1">Approved</option>
+                                <option value="2">Denied</option>
+                                <option value="3">Pending</option>
+                                <option value="4">Open</option>
+                                <option value="5">Closed</option>
+                            </InputSelect>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <!-- Submit Button -->
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-6">
+                <!-- Description -->
+                <div class="form-group h-100">
+                    <label for="description">Description</label>
+                    <InputTextArea id="description" class="form-control h-100" rows="10" required @bind-Value="newJobAd.Description" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</EditForm>
+
+@code {
+    private JobAd newJobAd = new JobAd();
+
+    private async Task HandleValidSubmit()
+    {
+        DbQueryProvider.Init();
+
+        if (newJobAd is not null)
+        {
+            Console.WriteLine("Title: " + newJobAd.Title);
+            DbQueryProvider.Service.AddNewJobAd(1, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
+            await JSRuntime.InvokeVoidAsync("alert", "Job Ad created successfully!");
+        }
+    }
+
+    private string GetStatusName()
+    {
+        switch (newJobAd.StatusId)
+        {
+            case 1:
+                return "Approved";
+            case 2:
+                return "Denied";
+            case 3:
+                return "Pending";
+            case 4:
+                return "Open";
+            case 5:
+                return "Closed";
+            default:
+                return "Open";
+        }
+    }
+}
