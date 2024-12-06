@@ -10,8 +10,7 @@ namespace Jobify.Api.DTOs
         [Required]
         public FirmDTO Firm { get; set; } = null!;
 
-        [StringLength(100)]
         [Required]
-        public string? Position { get; set; }
+        public string? Position { get; set; } = string.Empty;
     }
 }

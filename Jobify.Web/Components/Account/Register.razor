@@ -1,0 +1,90 @@
+﻿@page "/Account/Register"
+@using System.ComponentModel.DataAnnotations
+@using Jobify.Api.DTOs
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Register</PageTitle>
+
+<h3>Employer Registration</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <EditForm Model="RegistrationDto" method="post" OnValidSubmit="RegisterUser" FormName="Register">
+                <DataAnnotationsValidator />
+                <hr />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.User.Name" class="form-control" aria-required="true" />
+                    <label for="name" class="form-label">Name</label>
+                    <ValidationMessage For="() => RegistrationDto.User.Name" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.User.Surname" class="form-control" aria-required="true" />
+                    <label for="surname" class="form-label">Surname</label>
+                    <ValidationMessage For="() => RegistrationDto.User.Surname" class="text-danger" />
+                </div>                
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.User.Mail" class="form-control" aria-required="true" />
+                    <label for="email" class="form-label">Email</label>
+                    <ValidationMessage For="() => RegistrationDto.User.Mail" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="RegistrationDto.User.Password" class="form-control" aria-required="true" />
+                    <label for="password" class="form-label">Password</label>
+                    <ValidationMessage For="() => RegistrationDto.User.Password" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.Firm.FirmName" class="form-control" aria-required="true" />
+                    <label for="firmName" class="form-label">Name of firm</label>
+                    <ValidationMessage For="() => RegistrationDto.Firm.FirmName" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.Firm.Oib" class="form-control" aria-required="true" />
+                    <label for="oib" class="form-label">OIB</label>
+                    <ValidationMessage For="() => RegistrationDto.Firm.Oib" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="RegistrationDto.Position" class="form-control" aria-required="true" />
+                    <label for="position" class="form-label">Position</label>
+                    <ValidationMessage For="() => RegistrationDto.Position" class="text-danger" />
+                </div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            </EditForm>
+        </section>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private EmployerRegistrationDTO RegistrationDto { get; set; } = new EmployerRegistrationDTO
+        {
+            User = new UserDTO(),
+            Firm = new FirmDTO(),
+            Position = ""
+        };
+
+    public async Task RegisterUser()
+    {
+        try
+        {
+            var apiUrl = "http://localhost:5130/api/Employer/register";
+            var response = await Http.PostAsJsonAsync(apiUrl, RegistrationDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("/Account/Success", forceLoad: true);
+            }
+            else
+            {
+                Console.WriteLine($"Error registering employer: {response.ReasonPhrase}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+
