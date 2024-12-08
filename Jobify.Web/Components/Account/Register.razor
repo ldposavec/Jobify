@@ -1,12 +1,12 @@
 ﻿@page "/Account/Register"
 @using System.ComponentModel.DataAnnotations
 @using Jobify.Api.DTOs
-@inject HttpClient Http
+@using Jobify.Api.Service
+@inject ApiService ApiService
 @inject NavigationManager Navigation
-@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
 
 <PageTitle>Register</PageTitle>
-
 <h3>Employer Registration</h3>
 
 <div class="row">
@@ -69,16 +69,17 @@
     {
         try
         {
-            var apiUrl = "http://localhost:5130/api/Employer/register";
-            var response = await Http.PostAsJsonAsync(apiUrl, RegistrationDto);
+            var response = await ApiService.RegisterEmployerAsync(RegistrationDto);
 
             if (response.IsSuccessStatusCode)
             {
-                Navigation.NavigateTo("/Account/Success", forceLoad: true);
+                Navigation.NavigateTo("/Account/Success", forceLoad: false);
+                Navigation.Refresh();
             }
             else
             {
-                Console.WriteLine($"Error registering employer: {response.ReasonPhrase}");
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error registering employer: {response.ReasonPhrase}. Details: {errorContent}");
             }
         }
         catch (Exception ex)

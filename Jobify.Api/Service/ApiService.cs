@@ -12,11 +12,11 @@ namespace Jobify.Api.Service
             _clientFactory = clientFactory;
         }
 
-        public async Task RegisterEmployerAsync(EmployerRegistrationDTO dto)
+        public async Task<HttpResponseMessage> RegisterEmployerAsync(EmployerRegistrationDTO dto)
         {
             var client = _clientFactory.CreateClient(CLIENT);
             var response = await client.PostAsJsonAsync(ApiRoutes.Employer.Register, dto);
-            response.EnsureSuccessStatusCode();
+            return response; 
         }
     }
 }
