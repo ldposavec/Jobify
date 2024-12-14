@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Jobify;
 
 namespace Jobify.BL.DALModels;
 
@@ -38,8 +39,9 @@ public partial class JobifyContext : DbContext
     public virtual DbSet<UserType> UserTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //=> optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
-    => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Jobify");
+        //=> optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
+        //=> optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Jobify");
+        => optionsBuilder.UseNpgsql("Host=truly-universal-spitz.data-1.use1.tembo.io;Port=5432;Username=postgres;Password=y2csSQsBqEyAi4c6");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -34,11 +34,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                      .AddEnvironmentVariables();
-var connectionString = builder.Configuration.GetConnectionString("AppConnStr") ?? throw new InvalidOperationException("Connection string 'AppConnStr' not found.");
+var connectionString = builder.Configuration.GetConnectionString("Tembo") ?? throw new InvalidOperationException("Connection string 'Tembo' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<JobifyContext>(options =>
+    options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-Console.WriteLine(builder.Configuration.GetConnectionString("AppConnStr"));
+Console.WriteLine(builder.Configuration.GetConnectionString("Tembo"));
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>()
