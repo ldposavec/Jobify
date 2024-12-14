@@ -26,8 +26,8 @@ builder.Services.AddScoped<IWebDriver>(sp =>
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Get connection string from configuration
-var connectionString = builder.Configuration.GetConnectionString("AppConnStr")
-                      ?? throw new InvalidOperationException("Connection string 'AppConnStr' not found.");
+var connectionString = builder.Configuration.GetConnectionString("Tembo")
+                      ?? throw new InvalidOperationException("Connection string 'Tembo' not found.");
 
 // Register the DbContext with DI
 builder.Services.AddDbContext<JobifyContext>(options =>
