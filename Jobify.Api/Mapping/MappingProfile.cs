@@ -19,6 +19,7 @@ namespace Jobify.Api.Mapping
             
             CreateMap<JobApp, JobAppDTO>().ReverseMap();
             CreateMap<Student, StudentDTO>().ReverseMap();
+            CreateMap<Student, StudentRegistrationDTO>().ReverseMap();
 
             CreateMap<Admin, AdminDTO>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore()) 

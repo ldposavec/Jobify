@@ -33,6 +33,7 @@ builder.Services.AddDbContext<JobifyContext>(options =>
 
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Employer>, EmployerRepository>();
+builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
 builder.Services.AddScoped<IRepository<Firm>, FirmRepository>();
 builder.Services.AddScoped<IRepository<UserType>, UserTypeRepository>();
 

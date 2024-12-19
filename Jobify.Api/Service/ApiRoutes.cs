@@ -7,6 +7,18 @@
             public const string Base = "api/Employer";
             public const string Register = $"{Base}/register";
             public const string JWT = $"{Base}/generate-jwt";
+        }        
+        
+        public static class Student
+        {
+            public const string Base = "api/Student";
+            public const string Register = $"{Base}/register";
+        }        
+        
+        public static class UserType
+        {
+            public const string Base = "api/UserType";
+            public const string Values = $"{Base}/get";
         }
     }
 }

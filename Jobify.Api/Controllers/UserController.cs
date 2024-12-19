@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Jobify.Api.DTOs;
 using Jobify.BL.DALModels;
+using Jobify.BL.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jobify.Api.Controllers
@@ -10,17 +12,32 @@ namespace Jobify.Api.Controllers
 
     public class UserController : ControllerBase
     {
+        private readonly IRepository<User> _repository;
+        private readonly IRepository<UserType> _userTypeRepository;
+        private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IMapper _mapper;
-        public UserController(IMapper mapper)
+        public UserController(IRepositoryFactory repositoryFactory, IPasswordHasher<User> passwordHasher, IMapper mapper)
         {
+            _repository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
+            _passwordHasher = passwordHasher;
             _mapper = mapper;
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<UserDTO>> Get()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var users = _repository.GetAll();
+                var usersDtos = _mapper.Map<IEnumerable<UserDTO>>(users);
+                return Ok(usersDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET api/<UserController>/5

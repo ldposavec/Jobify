@@ -18,7 +18,18 @@ namespace Jobify.BL.Repositories
 
         public User Delete(int id)
         {
-            throw new NotImplementedException();
+            var user = GetById(id);
+
+            if (user == null)
+            {
+                throw new Exception($"User with id {id} not found.");
+            }
+
+            _context.Users.Remove(user);
+
+            _context.SaveChanges();
+
+            return user;
         }
         public IEnumerable<User> GetAll()
         {
@@ -33,7 +44,13 @@ namespace Jobify.BL.Repositories
 
         public User? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Users
+                 .Include(u => u.Admins)
+                .Include(u => u.Employers).ThenInclude(e => e.Firm)
+                .Include(u => u.Notifications)
+                .Include(u => u.Students)
+                .Include(u => u.UserType)
+                .FirstOrDefault(u => u.Id == id);
         }
 
         public void Insert(User entity)

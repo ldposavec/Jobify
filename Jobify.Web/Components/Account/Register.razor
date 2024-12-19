@@ -7,85 +7,167 @@
 @rendermode InteractiveServer
 
 <PageTitle>Register</PageTitle>
-<h3>Employer Registration</h3>
+<h3>User Registration</h3>
 
 <div class="row">
     <div class="col-md-4">
         <section>
-            <EditForm Model="RegistrationDto" method="post" OnValidSubmit="RegisterUser" FormName="Register">
-                <DataAnnotationsValidator />
-                <hr />
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.User.Name" class="form-control" aria-required="true" />
-                    <label for="name" class="form-label">Name</label>
-                    <ValidationMessage For="() => RegistrationDto.User.Name" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.User.Surname" class="form-control" aria-required="true" />
-                    <label for="surname" class="form-label">Surname</label>
-                    <ValidationMessage For="() => RegistrationDto.User.Surname" class="text-danger" />
-                </div>                
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.User.Mail" class="form-control" aria-required="true" />
-                    <label for="email" class="form-label">Email</label>
-                    <ValidationMessage For="() => RegistrationDto.User.Mail" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="RegistrationDto.User.Password" class="form-control" aria-required="true" />
-                    <label for="password" class="form-label">Password</label>
-                    <ValidationMessage For="() => RegistrationDto.User.Password" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.Firm.FirmName" class="form-control" aria-required="true" />
-                    <label for="firmName" class="form-label">Name of firm</label>
-                    <ValidationMessage For="() => RegistrationDto.Firm.FirmName" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.Firm.Oib" class="form-control" aria-required="true" />
-                    <label for="oib" class="form-label">OIB</label>
-                    <ValidationMessage For="() => RegistrationDto.Firm.Oib" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="RegistrationDto.Position" class="form-control" aria-required="true" />
-                    <label for="position" class="form-label">Position</label>
-                    <ValidationMessage For="() => RegistrationDto.Position" class="text-danger" />
-                </div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-            </EditForm>
+            <div class="form-floating mb-3">
+                <select @bind="SelectedUserType" class="form-select">
+                    <option value="">Select user Type</option>
+                    @foreach (var userType in UserTypes)
+                    {
+                        <option value="@userType.Id">@userType.Name</option>
+                    }
+                </select>
+                <label for="userType" class="form-label">User Type</label>
+            </div>
+
+            @if (SelectedUserTypeName == "Employer")
+            {
+                <EditForm Model="EmployerDto" OnValidSubmit="RegisterEmployer">
+                    <DataAnnotationsValidator />
+                    <hr />
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.User.Name" class="form-control" aria-required="true" />
+                        <label for="name" class="form-label">Name</label>
+                        <ValidationMessage For="() => EmployerDto.User.Name" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.User.Surname" class="form-control" aria-required="true" />
+                        <label for="surname" class="form-label">Surname</label>
+                        <ValidationMessage For="() => EmployerDto.User.Surname" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.User.Mail" class="form-control" aria-required="true" />
+                        <label for="email" class="form-label">Email</label>
+                        <ValidationMessage For="() => EmployerDto.User.Mail" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="EmployerDto.User.Password" class="form-control" aria-required="true" />
+                        <label for="password" class="form-label">Password</label>
+                        <ValidationMessage For="() => EmployerDto.User.Password" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.Firm.FirmName" class="form-control" aria-required="true" />
+                        <label for="firmName" class="form-label">Firm Name</label>
+                        <ValidationMessage For="() => EmployerDto.Firm.FirmName" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.Firm.Oib" class="form-control" aria-required="true" />
+                        <label for="oib" class="form-label">OIB</label>
+                        <ValidationMessage For="() => EmployerDto.Firm.Oib" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="EmployerDto.Position" class="form-control" aria-required="true" />
+                        <label for="position" class="form-label">Position</label>
+                        <ValidationMessage For="() => EmployerDto.Position" class="text-danger" />
+                    </div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                </EditForm>
+            }
+            else if (SelectedUserTypeName == "Student")
+            {
+                <EditForm Model="StudentDto" OnValidSubmit="RegisterStudent">
+                    <DataAnnotationsValidator />
+                    <hr />
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="StudentDto.User.Name" class="form-control" aria-required="true" />
+                        <label for="name" class="form-label">Name</label>
+                        <ValidationMessage For="() => StudentDto.User.Name" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="StudentDto.User.Surname" class="form-control" aria-required="true" />
+                        <label for="surname" class="form-label">Surname</label>
+                        <ValidationMessage For="() => StudentDto.User.Surname" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="StudentDto.User.Mail" class="form-control" aria-required="true" />
+                        <label for="email" class="form-label">Email</label>
+                        <ValidationMessage For="() => StudentDto.User.Mail" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="StudentDto.User.Password" class="form-control" aria-required="true" />
+                        <label for="password" class="form-label">Password</label>
+                        <ValidationMessage For="() => StudentDto.User.Password" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="StudentDto.Jmbag" class="form-control" aria-required="true" />
+                        <label for="jmbag" class="form-label">JMBAG</label>
+                        <ValidationMessage For="() => StudentDto.Jmbag" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputNumber @bind-Value="StudentDto.AverageGrade" class="form-control" aria-required="true" />
+                        <label for="averageGrade" class="form-label">Average Grade</label>
+                        <ValidationMessage For="() => StudentDto.AverageGrade" class="text-danger" />
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputNumber @bind-Value="StudentDto.YearOfStudy" class="form-control" aria-required="true" />
+                        <label for="yearOfStudy" class="form-label">Year of Study</label>
+                        <ValidationMessage For="() => StudentDto.YearOfStudy" class="text-danger" />
+                    </div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                </EditForm>
+            }
         </section>
     </div>
 </div>
 
 @code {
-    [SupplyParameterFromForm]
-    private EmployerRegistrationDTO RegistrationDto { get; set; } = new EmployerRegistrationDTO
+    private List<UserTypeDTO> UserTypes { get; set; } = new();
+    private int SelectedUserType { get; set; }
+    private string SelectedUserTypeName => UserTypes.FirstOrDefault(u => u.Id == SelectedUserType)?.Name;
+
+    private EmployerRegistrationDTO EmployerDto { get; set; } = new EmployerRegistrationDTO
         {
             User = new UserDTO(),
             Firm = new FirmDTO(),
             Position = ""
         };
+    private StudentRegistrationDTO StudentDto { get; set; } = new StudentRegistrationDTO
+        {
+            User = new UserDTO(),
+            Jmbag = "",
+            AverageGrade = 0,
+            YearOfStudy = 0
+        };
 
-    public async Task RegisterUser()
+    protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var response = await ApiService.RegisterEmployerAsync(RegistrationDto);
+        // var response = await ApiService.GetUserTypes();
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     UserTypes = await response.Content.ReadFromJsonAsync<List<UserTypeDTO>>();
+        // }
+        UserTypes = new List<UserTypeDTO>
+            {
+                new UserTypeDTO { Id = 1, Name = "Student" },
+                new UserTypeDTO { Id = 2, Name = "Employer" }
+            };
+    }
 
-            if (response.IsSuccessStatusCode)
-            {
-                Navigation.NavigateTo("/Account/CheckEmail", forceLoad: false);
-                Navigation.Refresh();
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error registering employer: {response.ReasonPhrase}. Details: {errorContent}");
-            }
-        }
-        catch (Exception ex)
+    private async Task RegisterEmployer()
+    {
+        var response = await ApiService.RegisterEmployerAsync(EmployerDto);
+        HandleResponse(response, "/Account/CheckEmail");
+    }
+
+    private async Task RegisterStudent()
+    {
+        var response = await ApiService.RegisterStudentAsync(StudentDto);
+        HandleResponse(response, "/Account/CheckEmail");
+    }
+
+    private void HandleResponse(HttpResponseMessage response, string redirectUrl)
+    {
+        if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            Navigation.NavigateTo(redirectUrl, forceLoad: false);
+            Navigation.Refresh();
+        }
+        else
+        {
+            Console.WriteLine($"Error: {response.StatusCode}, {response.ReasonPhrase}");
         }
     }
 }
-

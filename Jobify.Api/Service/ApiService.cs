@@ -33,5 +33,18 @@ namespace Jobify.Api.Service
             return response;
         }
 
+        public async Task<HttpResponseMessage> RegisterStudentAsync(StudentRegistrationDTO dto)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.PostAsJsonAsync(ApiRoutes.Student.Register, dto);
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> GetUserTypes()
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.GetAsync(ApiRoutes.UserType.Values);
+            return response;
+        }
     }
 }

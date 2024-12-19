@@ -112,7 +112,6 @@ namespace Jobify.Api.Controllers
 
             var jwtProvider = new JwtTokenProvider(_configuration);
             string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail);
-            Console.WriteLine(verificationToken);
 
             var emailService = new EmailService(_configuration);
             string verificationLink = $"http://localhost:5148/Account/VerifyEmail?token={verificationToken}";
