@@ -1,0 +1,35 @@
+﻿@page "/Auth/VerifyEmail"
+@using Jobify.Api.Service
+@using Microsoft.AspNetCore.WebUtilities
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h3>@StatusMessage</h3>
+
+@code {
+    private string StatusMessage = "Verifying your email... Please wait.";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+            var query = QueryHelpers.ParseQuery(uri.Query);
+
+            if (query.TryGetValue("token", out var token))
+            {
+                var response = await ApiService.VerifyEmailAsync(token);
+                if (response.IsSuccessStatusCode)
+                {
+                    StatusMessage = "Your email has been successfully verified!";
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error verifying email: {e.Message}");
+            StatusMessage = "Unfortunately, we could not verify your email. The link may have expired or is invalid.";
+        }
+    }
+}

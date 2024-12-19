@@ -1,4 +1,5 @@
 using Jobify.BL.DALModels;
+using Jobify.Api.Service;
 using Jobify.Client.Pages;
 using Jobify.Components;
 using Jobify.Components.Account;

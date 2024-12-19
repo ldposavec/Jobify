@@ -4,7 +4,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading.Tasks;
 
-namespace Jobify.BL.Service
+namespace Jobify.BL.Services
 {
     public class OIBValidationService
     {
