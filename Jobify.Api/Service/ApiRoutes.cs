@@ -18,7 +18,15 @@
         public static class UserType
         {
             public const string Base = "api/UserType";
-            public const string Values = $"{Base}/get";
+            public const string Values = $"{Base}";
+        }        
+        
+        public static class User
+        {
+            public const string Base = "api/User";
+            public const string Login = $"{Base}/Login";
+            public const string ChangePassword = $"{Base}/ChangePassword";
+            public const string SendPasswordResetEmail = $"{Base}/SendPasswordResetEmail";
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/Account/Register"
+﻿@page "/Auth/Register"
 @using System.ComponentModel.DataAnnotations
 @using Jobify.Api.DTOs
 @using Jobify.Api.Service
@@ -113,6 +113,12 @@
     </div>
 </div>
 
+<div class="row mt-4">
+    <div class="col-md-4">
+        <a href="/Auth/Login" class="btn btn-link">Already have an account? Login here.</a>
+    </div>
+</div>
+
 @code {
     private List<UserTypeDTO> UserTypes { get; set; } = new();
     private int SelectedUserType { get; set; }
@@ -149,13 +155,13 @@
     private async Task RegisterEmployer()
     {
         var response = await ApiService.RegisterEmployerAsync(EmployerDto);
-        HandleResponse(response, "/Account/CheckEmail");
+        HandleResponse(response, "/Auth/CheckEmail");
     }
 
     private async Task RegisterStudent()
     {
         var response = await ApiService.RegisterStudentAsync(StudentDto);
-        HandleResponse(response, "/Account/CheckEmail");
+        HandleResponse(response, "/Auth/CheckEmail");
     }
 
     private void HandleResponse(HttpResponseMessage response, string redirectUrl)

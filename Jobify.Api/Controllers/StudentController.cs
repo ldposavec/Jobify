@@ -61,10 +61,10 @@ namespace Jobify.Api.Controllers
             _studentRepository.Save();
 
             var jwtProvider = new JwtTokenProvider(_configuration);
-            string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail);
+            string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail, studentUserType.Name);
 
             var emailService = new EmailService(_configuration);
-            string verificationLink = $"http://localhost:5148/Account/VerifyEmail?token={verificationToken}";
+            string verificationLink = $"http://localhost:5148/Auth/VerifyEmail?token={verificationToken}";
             string emailBody = $"<p>Dear {registerDto.User.Name},</p>" +
                                $"<p>Please verify your email by clicking the link below:</p>" +
                                $"<a href=\"{verificationLink}\">{verificationLink}</a>" +

@@ -45,6 +45,27 @@ namespace Jobify.Api.Service
             var client = _clientFactory.CreateClient(CLIENT);
             var response = await client.GetAsync(ApiRoutes.UserType.Values);
             return response;
+        }        
+        
+        public async Task<HttpResponseMessage> LoginAsync(LoginDTO dto)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.PostAsJsonAsync(ApiRoutes.User.Login, dto);
+            return response;
+        }        
+        
+        public async Task<HttpResponseMessage> ChangePasswordAsync(UserChangePasswordDto dto)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.PostAsJsonAsync(ApiRoutes.User.ChangePassword, dto);
+            return response;
+        }
+        public async Task<HttpResponseMessage> SendPasswordResetEmailAsync(string email)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var requestUri = $"{ApiRoutes.User.SendPasswordResetEmail}?email={Uri.EscapeDataString(email)}";
+            var response = await client.PostAsync(requestUri, null); 
+            return response;
         }
     }
 }
