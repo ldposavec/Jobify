@@ -1,0 +1,177 @@
+﻿@page "/students/internship-listing"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using Jobify.BL.Enums
+@using Jobify.BL.Providers
+@using Jobify.BL.Repositories
+
+<h3>Internship Listing</h3>
+
+@if (jobAds == null)
+{
+    <p>Loading job ads...</p>
+}
+else if (jobAds.Count == 0)
+{
+    <p>No job ads found.</p>
+}
+else
+{
+    @* <div class="row">
+        @foreach (var job in jobAds.Where(j => j.StatusId == 4))
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@job.Title</h4>
+                        <p class="card-text">@job.Description</p>
+                        <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
+                        <button class="btn btn-primary" @onclick="() => ApplyForJob(job.Id)">Apply</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div> *@
+    <div class="card-deck">
+        <div class="row">
+    @foreach (var job in jobAds.Where(j => j.StatusId == 4))
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@job.Title</h5>
+                    <p class="card-text">@job.Description</p>
+                    <hr />
+                    <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
+                    <button class="btn btn-primary" @onclick="() => ShowJobDetails(job)">Apply</button>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">@GetTimeSinceUpload(job.Id)</small>
+                </div>
+            </div>
+        </div>
+    }
+        </div>
+    </div>
+}
+
+
+<div class="modal fade @(isModalVisible ? "show d-block" : "")" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@selectedJob?.Title</h5>
+                <button type="button" class="btn-close" @onclick="HideModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>@selectedJob?.Description</p>
+                <p><strong>Salary:</strong> @selectedJob?.Salary€</p>
+                <hr />
+                <label for="cvUpload">Upload your CV (PDF):</label>
+                <InputFile id="cvUpload" OnChange="HandleFileUpload" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="ApplyForJob">Submit Application</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<JobAd> jobAds = new List<JobAd>();
+    private JobApp jobApp;
+    private JobAd? selectedJob = null;
+    private bool isModalVisible = false;
+    private string? uploadedCvPath = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DbQueryProvider.Init();
+        LoadJobAds();
+    }
+
+    private void LoadJobAds()
+    {
+        jobAds = DbQueryProvider.Service.GetAllJobAds();
+    }
+
+    private void ShowJobDetails(JobAd job)
+    {
+        selectedJob = job;
+        isModalVisible = true;
+    }
+
+    private void HideModal()
+    {
+        isModalVisible = false;
+        selectedJob = null;
+        uploadedCvPath = null;
+    }
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file.ContentType == "application/pdf")
+        {
+            try
+            {
+                var filePath = Path.Combine("wwwroot/uploads/cv", file.Name);
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await file.OpenReadStream().CopyToAsync(stream);
+                uploadedCvPath = filePath;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                await JSRuntime.InvokeVoidAsync("alert", "An error occurred while uploading your CV. Please try again.");
+            }
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Please upload a valid PDF file.");
+        }
+    }
+
+    private async Task ApplyForJob()
+    {
+        if (selectedJob == null || uploadedCvPath == null)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Please upload your CV before submitting.");
+            return;
+        }
+
+        var jobApp = new JobApp()
+            {
+                JobAdId = selectedJob.Id,
+                StudentId = 1,
+                CreatedAt = DateTime.Now,
+                CvFilepath = uploadedCvPath,
+                StatusId = (int)StatusEnum.Pending
+            };
+
+        DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, 1, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
+        await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
+        HideModal();
+    }
+
+    private string GetTimeSinceUpload(int jobId)
+    {
+        var jobAd = DbQueryProvider.Service.GetJobAdById(jobId);
+        var timeSinceUpload = DateTime.Now - jobAd.CreatedAt;
+        if (timeSinceUpload is null)
+            return "Unknown";
+        else if (timeSinceUpload.Value.Days == 0)
+            if (timeSinceUpload.Value.Minutes == 0)
+                return "Posted just now";
+            else if (timeSinceUpload.Value.Minutes == 1)
+                return "Posted 1 minute ago";
+            else
+                return $"Posted {timeSinceUpload.Value.Minutes} minutes ago";
+        else if (timeSinceUpload.Value.Days == 1)
+            return $"Posted yesterday";
+        else
+            return $"Posted {timeSinceUpload.Value.Days} days ago";
+    }
+
+}

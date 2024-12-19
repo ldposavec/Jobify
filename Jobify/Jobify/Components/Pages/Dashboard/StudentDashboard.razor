@@ -1,0 +1,246 @@
+﻿@page "/students/dashboard"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using Jobify.BL.Providers
+@using Jobify.BL.Repositories
+
+<h3>StudentDashboard</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h4>My Applications</h4>
+            @if (jobApps == null)
+            {
+                <p>Loading job applications...</p>
+            }
+            else if (jobApps.Count == 0)
+            {
+                <p>No job applications found.</p>
+            }
+            else
+            {
+                <div class="card-deck">
+                    <div class="row">
+                        @foreach (var job in jobApps)
+                        {
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="d-flex justify-content-around">
+                                            <h5 class="card-title mt-2">@GetJobAdTitle(job.JobAdId)</h5>
+                                            @StatusToString(job.StatusId)
+                                        </div>
+                                        <hr />
+                                        <p class="card-text"><strong>Salary:</strong> @GetSalary(job.JobAdId)€</p>
+                                        <div class="d-flex justify-content-around">
+                                        @if (job.StatusId == (int)StatusEnum.Approved)
+                                        {
+                                            <button class="btn btn-primary m-1" @onclick="() => AcceptApplication(job.Id)">Accept</button>
+                                        }
+                                        <button class="btn btn-primary m-1" @onclick="() => CancelApplication(job.Id)">Opt out</button>
+                                        </div>
+                                    </div>
+                                    @* <div class="card-footer">
+                                        <small class="text-muted">@GetTimeSinceUpload(job.Id)</small>
+                                    </div> *@
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @* <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var jobApp in jobApps)
+                        {
+                            <tr>
+                                <td>@GetJobAdTitle(jobApp.JobAdId)</td>
+                                <td>@jobApp.StatusId</td>
+                                <td><button class="btn btn-primary" @onclick="() => CancelApplication(jobApp.Id)">Cancel</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> *@
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h4>Accepted Applications</h4>
+            @if (jobOffers == null)
+            {
+                <p>Loading job offers...</p>
+            }
+            else if (jobOffers.Count == 0)
+            {
+                <p>No job offers found.</p>
+            }
+            else
+            {
+                <div class="card-deck">
+                    <div class="row">
+                        @foreach (var job in jobOffers)
+                        {
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="d-flex justify-content-around">
+                                            <h5 class="card-title mt-2">@GetJobAdTitle(GetJobAdId(job.JobAppId))</h5>
+                                            @StatusToString(job.StatusId)
+                                        </div>
+                                        <hr />
+                                        <p class="card-text"><strong>Salary:</strong> @GetSalary(GetJobAdId(job.JobAppId))€</p>
+                                        <div class="d-flex justify-content-around">
+                                        <button class="btn btn-primary m-1" @onclick="() => CancelApplication(job.JobAppId)">Opt out</button>
+                                        </div>
+                                    </div>
+                                    @* <div class="card-footer">
+                                        <small class="text-muted">@GetTimeSinceUpload(job.Id)</small>
+                                    </div> *@
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @* <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var jobApp in jobApps)
+                        {
+                            <tr>
+                                <td>@GetJobAdTitle(jobApp.JobAdId)</td>
+                                <td>@jobApp.StatusId</td>
+                                <td><button class="btn btn-primary" @onclick="() => CancelApplication(jobApp.Id)">Cancel</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> *@
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<JobApp> jobApps = new List<JobApp>();
+    private List<JobOffer> jobOffers = new List<JobOffer>();
+    private JobAd jobAd;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DbQueryProvider.Init();
+        LoadJobApps();
+        LoadAcceptedApplications();
+    }
+
+    private void LoadJobApps()
+    {
+        jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(1);
+    }
+
+    private async Task CancelApplication(int id)
+    {
+        bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to cancel this job application?");
+        if (isConfirmed)
+        {
+            var jobOffer = DbQueryProvider.Service.GetJobOfferByJobAppId(id);
+            if (jobOffer is not null) DbQueryProvider.Service.DeleteJobOffer(jobOffer.Id);
+            var job = DbQueryProvider.Service.GetJobAppById(id);
+            if (File.Exists(job.CvFilepath)) File.Delete(job.CvFilepath);
+            DbQueryProvider.Service.DeleteJobApp(id);
+            await JSRuntime.InvokeVoidAsync("alert", "Job application cancelled successfully!");
+            LoadJobApps();
+            LoadAcceptedApplications();
+        }
+    }
+
+    private async Task AcceptApplication(int id)
+    {
+        bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to accept this job application?");
+        if (isConfirmed)
+        {
+            var job = DbQueryProvider.Service.GetJobAppById(id);
+            DbQueryProvider.Service.AddNewJobOffer(job.Id, DateTime.Now, job.StatusId);
+            await JSRuntime.InvokeVoidAsync("alert", "Job application accepted successfully!");
+        }
+        LoadAcceptedApplications();
+    }
+
+    private void LoadAcceptedApplications()
+    {
+        jobOffers = DbQueryProvider.Service.GetAllJobOffersByStudentId(1);
+    }
+
+    private string GetJobAdTitle(int id)
+    {
+        try
+        {
+            jobAd = DbQueryProvider.Service.GetJobAdById(id);
+            if (jobAd is not null) return jobAd.Title;
+            else return "N/A";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return "N/A";
+        }
+    }
+
+    private decimal GetSalary(int id)
+    {
+        try
+        {
+            jobAd = DbQueryProvider.Service.GetJobAdById(id);
+            if (jobAd is not null) return jobAd.Salary;
+            else return 0;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return 0;
+        }
+    }
+
+    private MarkupString StatusToString(int id)
+    {
+        var status = DbQueryProvider.Service.GetStatusById(id).Name;
+        if (id == (int)StatusEnum.Pending)
+            return (MarkupString)$"<button class=\"btn btn-primary\" disabled>{status}</button>";
+        else if (id == (int)StatusEnum.Approved)
+            return (MarkupString)$"<button class=\"btn btn-success\" disabled>{status}</button>";
+        else if (id == (int)StatusEnum.Denied)
+            return (MarkupString)$"<button class=\"btn btn-danger\" disabled>{status}</button>";
+        else
+            return (MarkupString)$"<button class=\"btn btn-warning\" disabled>Error</button>";
+    }
+
+    private int GetJobAdId(int id)
+    {
+        int? returnValue = 0;
+        try
+        {
+            if (DbQueryProvider.Service.GetJobAppById(id) is not null)
+                returnValue = DbQueryProvider.Service.GetJobAppById(id).JobAdId;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        if (returnValue is null) return 0;
+        else return (int)returnValue;
+    }
+}
