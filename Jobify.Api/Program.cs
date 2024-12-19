@@ -24,19 +24,19 @@ builder.Services.AddScoped<IWebDriver>(sp =>
     return new ChromeDriver();
 });
 
-//builder.Services.AddDbContext<JobifyContext>(options =>
-//{
-//    options.UseNpgsql("name=ConnectionStrings:AppConnStr");
-//});
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Services.AddDbContext<JobifyContext>(options =>
+{
+    options.UseNpgsql("name=ConnectionStrings:Tembo");
+});
+//builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Get connection string from configuration
-var connectionString = builder.Configuration.GetConnectionString("Tembo")
-                      ?? throw new InvalidOperationException("Connection string 'Tembo' not found.");
+//var connectionString = builder.Configuration.GetConnectionString("Tembo")
+//                      ?? throw new InvalidOperationException("Connection string 'Tembo' not found.");
 
-// Register the DbContext with DI
-builder.Services.AddDbContext<JobifyContext>(options =>
-    options.UseNpgsql(connectionString));
+//// Register the DbContext with DI
+//builder.Services.AddDbContext<JobifyContext>(options =>
+//    options.UseNpgsql(connectionString));
 
 //builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 

@@ -114,7 +114,7 @@ namespace Jobify.Api.Controllers
             string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail, employerUserType.Name);
 
             var emailService = new EmailService(_configuration);
-            string verificationLink = $"http://localhost:5148/Auth/VerifyEmail?token={verificationToken}";
+            string verificationLink = $"http://localhost:5249/Auth/VerifyEmail?token={verificationToken}";
             string emailBody = $"<p>Dear {registerDto.User.Name},</p>" +
                                $"<p>Please verify your email by clicking the link below:</p>" +
                                $"<a href=\"{verificationLink}\">{verificationLink}</a>" +

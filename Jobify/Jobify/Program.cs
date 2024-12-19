@@ -20,6 +20,12 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
+builder.Services.AddHttpClient("Jobify.Api", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Jobify:ApiBaseAddress"]);
+});
+builder.Services.AddScoped<ApiService>();
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;

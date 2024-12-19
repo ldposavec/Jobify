@@ -46,31 +46,6 @@ namespace Jobify.Api.Controllers
             }
         }
 
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
         [HttpPost("[action]")]
         public ActionResult Login(LoginDTO loginDto)
         {
@@ -106,7 +81,6 @@ namespace Jobify.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        //[Authorize(Roles = "user")]
         public ActionResult<UserChangePasswordDto> ChangePassword(UserChangePasswordDto changePasswordDto)
         {
             try
@@ -149,7 +123,7 @@ namespace Jobify.Api.Controllers
             var resetToken = jwtProvider.GenerateEmailVerificationToken(user.Mail, user.UserType.Name);
 
             var emailService = new EmailService(_configuration);
-            string resetLink = $"http://localhost:5148/Auth/ChangePassword?token={resetToken}";
+            string resetLink = $"http://localhost:5249/Auth/ChangePassword?token={resetToken}";
             string emailBody = $"<p>Click the link below to reset your password:</p><a href=\"{resetLink}\">{resetLink}</a>";
 
             await emailService.SendEmailAsync(email, "Password Reset Request", emailBody);
