@@ -18,5 +18,20 @@ namespace Jobify.Api.Service
             var response = await client.PostAsJsonAsync(ApiRoutes.Employer.Register, dto);
             return response; 
         }
+
+        public async Task<HttpResponseMessage> VerifyEmailAsync(string token)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.GetAsync($"api/Employer/verify-email?token={token}");
+            return response;
+        }        
+        
+        public async Task<HttpResponseMessage> GetJwtTokenAsync(string email)
+        {
+            var client = _clientFactory.CreateClient(CLIENT);
+            var response = await client.PostAsJsonAsync(ApiRoutes.Employer.JWT, email);
+            return response;
+        }
+
     }
 }

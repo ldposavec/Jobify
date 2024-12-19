@@ -20,8 +20,6 @@ namespace Jobify.BL.Repositories
         {
             throw new NotImplementedException();
         }
-
-        // dopuniti
         public IEnumerable<User> GetAll()
         {
             return _context.Users
@@ -50,7 +48,7 @@ namespace Jobify.BL.Repositories
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(entity);
         }
     }
 }

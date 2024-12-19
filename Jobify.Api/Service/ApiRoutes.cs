@@ -6,6 +6,7 @@
         {
             public const string Base = "api/Employer";
             public const string Register = $"{Base}/register";
+            public const string JWT = $"{Base}/generate-jwt";
         }
     }
 }

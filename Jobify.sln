@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobify", "Jobify\Jobify\Job
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobify.Client", "Jobify\Jobify.Client\Jobify.Client.csproj", "{0FE925E0-1458-4D86-A673-355BEE29B25D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobify.Web", "Jobify.Web\Jobify.Web.csproj", "{E2138D86-332D-498A-966E-3ACCB0CDB541}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jobify.Web", "Jobify.Web\Jobify.Web.csproj", "{E2138D86-332D-498A-966E-3ACCB0CDB541}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
