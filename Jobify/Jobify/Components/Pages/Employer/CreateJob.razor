@@ -80,11 +80,15 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <InputSelect id="status" class="form-control" @bind-Value="newJobAd.StatusId">
-                                <option value="1">Approved</option>
+                                @foreach (var status in statuses)
+                                {
+                                    <option value="@status.Id">@status.Name</option>
+                                }
+                                @* <option value="1">Approved</option>
                                 <option value="2">Denied</option>
                                 <option value="3">Pending</option>
                                 <option value="4">Open</option>
-                                <option value="5">Closed</option>
+                                <option value="5">Closed</option> *@
                             </InputSelect>
                         </div>
                     </div>
@@ -116,35 +120,26 @@
 
 @code {
     private JobAd newJobAd = new JobAd();
+    private List<Status> statuses = new List<Status>();
+
+    override protected void OnInitialized()
+    {
+        DbQueryProvider.Init();
+        LoadAllStatus();
+    }
+
+    private void LoadAllStatus()
+    {
+        statuses = DbQueryProvider.Service.GetAllStatuses();
+    }
 
     private async Task HandleValidSubmit()
     {
-        DbQueryProvider.Init();
-
         if (newJobAd is not null)
         {
             Console.WriteLine("Title: " + newJobAd.Title);
             DbQueryProvider.Service.AddNewJobAd(1, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
             await JSRuntime.InvokeVoidAsync("alert", "Job Ad created successfully!");
-        }
-    }
-
-    private string GetStatusName()
-    {
-        switch (newJobAd.StatusId)
-        {
-            case 1:
-                return "Approved";
-            case 2:
-                return "Denied";
-            case 3:
-                return "Pending";
-            case 4:
-                return "Open";
-            case 5:
-                return "Closed";
-            default:
-                return "Open";
         }
     }
 }

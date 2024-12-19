@@ -1,0 +1,153 @@
+﻿@page "/employers/dashboard"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using Jobify.BL.Enums
+@using Jobify.BL.Providers
+@using Jobify.BL.Repositories
+
+<h3>Employer Dashboard</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h4>My Offers</h4>
+            @if (jobAds == null)
+            {
+                <p>Loading job offers...</p>
+            }
+            else if (jobAds.Count == 0)
+            {
+                <p>No job offers found.</p>
+            }
+            else
+            {
+                <div class="card-deck">
+                    <div class="row">
+                        @foreach (var job in jobAds.Distinct())
+                        {
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@job.Title</h5>
+                                        <p class="card-text">@job.Description</p>
+                                        <p><strong>Applications:</strong> @GetNumberOfApplications(job.Id)</p>
+                                        <button class="btn btn-primary" @onclick="() => OpenManageModal(job.Id)">Manage</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade @(isModalVisible ? "show d-block" : "")" id="manageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="manageModalLabel">Manage Applications</h5>
+                <button type="button" class="close" @onclick="CloseManageModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student JMBAG</th>
+                            <th>Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var app in selectedJobApps)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="" class="link-info link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-0-hover" target="_blank" @onclick="() => OpenFile(app.CvFilepath)" @onclick:preventDefault>@GetStudentJmbag(app.StudentId)</a>
+                                </td>
+                                <td>
+                                    <input type="checkbox" @onchange="e => UpdateSelection(app, (bool)e.Value)" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" @onclick="() => UpdateApplications(StatusEnum.Approved)">Approve</button>
+                <button type="button" class="btn btn-danger" @onclick="() => UpdateApplications(StatusEnum.Denied)">Deny</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseManageModal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<JobAd> jobAds = new List<JobAd>();
+    private List<JobApp> jobApps = new List<JobApp>();
+    private List<JobApp> selectedJobApps = new List<JobApp>();
+    private List<Student> selectedStudents = new List<Student>();
+    private bool isModalVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DbQueryProvider.Init();
+        LoadJobAds();
+    }
+
+    private void LoadJobAds()
+    {
+        jobAds = DbQueryProvider.Service.GetAllJobAdsByEmployerId(1);
+    }
+
+    private int GetNumberOfApplications(int jobAdId)
+    {
+        return DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId).Count;
+    }
+
+    private void UpdateSelection(JobApp app, bool value)
+    {
+        Student student = DbQueryProvider.Service.GetStudentById(app.StudentId);
+        selectedStudents.Add(student);
+    }
+
+    private async Task OpenManageModal(int jobAdId)
+    {
+        selectedJobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        foreach (var app in selectedJobApps)
+        {
+            selectedStudents.Clear();
+        }
+        isModalVisible = true;
+    }
+
+    private async Task UpdateApplications(StatusEnum status)
+    {
+        foreach (var app in selectedJobApps.Where(a => selectedStudents.Contains(DbQueryProvider.Service.GetStudentById(a.StudentId))))
+        {
+            app.StatusId = (int)status;
+            DbQueryProvider.Service.UpdateJobApp(app);
+        }
+        CloseManageModal();
+        LoadJobAds();
+    }
+
+    private async Task CloseManageModal()
+    {
+        isModalVisible = false;
+        selectedJobApps.Clear();
+    }
+
+    private string GetStudentJmbag(int id)
+    {
+        return DbQueryProvider.Service.GetStudentById(id).Jmbag;
+    }
+
+    private void OpenFile(string filepath)
+    {
+        var newPath = filepath.Replace("wwwroot/", "");
+        JSRuntime.InvokeVoidAsync("open", newPath);
+    }
+}

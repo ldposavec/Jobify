@@ -33,6 +33,34 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
+        public void AddNewJobApp(int jobAdId, int studentId, DateTime createdAt, string cvFilepath, int statusId)
+        {
+            JobApp jobApp = new JobApp
+            {
+                JobAdId = jobAdId,
+                StudentId = studentId,
+                CreatedAt = createdAt,
+                CvFilepath = cvFilepath,
+                StatusId = statusId
+            };
+
+            _context.JobApps.Add(jobApp);
+            _context.SaveChanges();
+        }
+
+        public void AddNewJobOffer(int jobAppId, DateTime date, int statusId)
+        {
+            JobOffer jobOffer = new JobOffer
+            {
+                JobAppId = jobAppId,
+                Date = date,
+                StatusId = statusId
+            };
+
+            _context.JobOffers.Add(jobOffer);
+            _context.SaveChanges();
+        }
+
         public void AddNewStatus(string name)
         {
             Status status = new Status
@@ -51,6 +79,20 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
+        public void DeleteJobApp(int id)
+        {
+            JobApp jobApp = _context.JobApps.Find(id);
+            _context.JobApps.Remove(jobApp);
+            _context.SaveChanges();
+        }
+
+        public void DeleteJobOffer(int id)
+        {
+            JobOffer jobOffer = _context.JobOffers.Find(id);
+            _context.JobOffers.Remove(jobOffer);
+            _context.SaveChanges();
+        }
+
         public void DeleteStatus(int id)
         {
             Status status = _context.Statuses.Find(id);
@@ -63,9 +105,80 @@ namespace Jobify.BL.Database
             return _context.JobAds.ToList();
         }
 
+        public List<JobAd> GetAllJobAdsByEmployerId(int employerId)
+        {
+            return _context.JobAds.Where(ja => ja.EmployerId == employerId).ToList();
+        }
+
+        public List<JobApp> GetAllJobApps()
+        {
+            return _context.JobApps.ToList();
+        }
+
+        public List<JobApp> GetAllJobAppsByEmployerId(int employerId)
+        {
+            return _context.JobApps.Where(ja => ja.JobAd.EmployerId == employerId).ToList();
+        }
+
+        public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
+        {
+            return _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToList();
+        }
+
+        public List<JobApp> GetAllJobAppsByStudentId(int studentId)
+        {
+            return _context.JobApps.Where(ja => ja.StudentId == studentId).ToList();
+        }
+
+        public List<JobOffer> GetAllJobOffers()
+        {
+            return _context.JobOffers.ToList();
+        }
+
+        public List<JobOffer> GetAllJobOffersByStudentId(int studentId)
+        {
+            return _context.JobOffers.Where(jo => jo.JobApp.StudentId == studentId).ToList();
+        }
+
+        public List<Status> GetAllStatuses()
+        {
+            return _context.Statuses.ToList();
+        }
+
+        public JobAd GetJobAdById(int id)
+        {
+            return _context.JobAds.Find(id);
+        }
+
+        public JobApp GetJobAppById(int id)
+        {
+            return _context.JobApps.Find(id);
+        }
+
+        public JobOffer GetJobOfferByJobAppId(int jobAppId)
+        {
+            return _context.JobOffers.Where(jo => jo.JobAppId == jobAppId).FirstOrDefault();
+        }
+
+        public Status GetStatusById(int id)
+        {
+            return _context.Statuses.Find(id);
+        }
+
+        public Student GetStudentById(int id)
+        {
+            return _context.Students.Find(id);
+        }
+
         public void UpdateJobAd(JobAd jobAd)
         {
             _context.JobAds.Update(jobAd);
+            _context.SaveChanges();
+        }
+
+        public void UpdateJobApp(JobApp jobApp)
+        {
+            _context.JobApps.Update(jobApp);
             _context.SaveChanges();
         }
     }
