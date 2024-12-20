@@ -1,0 +1,17 @@
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\selenium-manager\linux\selenium-manager
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\selenium-manager\macos\selenium-manager
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\selenium-manager\windows\selenium-manager.exe
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\Jobify.BL.deps.json
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\Jobify.BL.runtimeconfig.json
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\Jobify.BL.dll
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\bin\Debug\net8.0\Jobify.BL.pdb
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.csproj.AssemblyReference.cache
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.AssemblyInfoInputs.cache
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.AssemblyInfo.cs
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.csproj.CoreCompileInputs.cache
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.dll
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\refint\Jobify.BL.dll
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.pdb
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\Jobify.BL.genruntimeconfig.cache
+C:\Users\Lovro\Desktop\jj\Jobify-lposavec\Jobify.BL\obj\Debug\net8.0\ref\Jobify.BL.dll

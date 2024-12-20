@@ -1,0 +1,50 @@
+[
+  {
+    "ContainingType": "Jobify.Api.Controllers.EmployerController",
+    "Method": "RegisterEmployer",
+    "RelativePath": "api/Employer/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerDto",
+        "Type": "Jobify.Api.DTOs.EmployerRegistrationDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Jobify.Api.Controllers.EmployerController",
+    "Method": "ValidateOIB",
+    "RelativePath": "api/Employer/validate-oib",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oib",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Jobify.Api.Controllers.FileController",
+    "Method": "GetFile",
+    "RelativePath": "api/files/{fileName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fileName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

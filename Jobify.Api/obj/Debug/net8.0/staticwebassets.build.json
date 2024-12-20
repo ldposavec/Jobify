@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "73KrpT2k7I78OVkrMXpuYK535QshbPWVQa1+y1n+Md4=",
+  "Source": "Jobify.Api",
+  "BasePath": "_content/Jobify.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
