@@ -5,7 +5,7 @@ namespace Jobify.Api.DTOs
 {
     public class UserTypeDTO
     {
-        [JsonIgnore]
+        //[JsonIgnore]
         public int Id { get; set; }
 
         [Required]

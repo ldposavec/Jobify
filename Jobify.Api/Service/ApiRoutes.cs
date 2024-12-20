@@ -18,7 +18,6 @@
         public static class UserType
         {
             public const string Base = "api/UserType";
-            public const string Values = $"{Base}";
         }        
         
         public static class User

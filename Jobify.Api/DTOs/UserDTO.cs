@@ -6,7 +6,7 @@ namespace Jobify.Api.DTOs
 {
     public class UserDTO
     {
-        [JsonIgnore]
+        //[JsonIgnore]
         public int Id { get; set; }
 
         [Required]
@@ -21,13 +21,13 @@ namespace Jobify.Api.DTOs
         [EmailAddress]
         public string Mail { get; set; } = null!;
 
-        [Required]
+        //[Required]
         public string Password { get; set; } = null!;
 
-        [JsonIgnore]
-        public bool? IsEmailVerified { get; set; }
+        //[JsonIgnore]
+        public bool IsEmailVerified { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public UserTypeDTO UserType { get; set; } = null!;
     }
 }

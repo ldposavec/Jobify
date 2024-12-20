@@ -1,0 +1,74 @@
+﻿@page "/Auth/Users/Edit/{id:int}"
+@using System.ComponentModel.DataAnnotations
+@using Jobify.Api.DTOs
+@using Jobify.Api.Service
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Edit User</PageTitle>
+
+<h3>Edit User</h3>
+
+<EditForm Model="@currentUser" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="UserType" class="form-label">User Type</label>
+        <InputSelect id="UserType" class="form-select" @bind-Value="currentUser.UserType.Id">
+            @foreach (var userType in userTypes)
+            {
+                <option value="@userType.Id">@userType.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <InputText id="Name" class="form-control" @bind-Value="currentUser.Name" />
+    </div>
+    <div class="mb-3">
+        <label for="Surname" class="form-label">Surname</label>
+        <InputText id="Surname" class="form-control" @bind-Value="currentUser.Surname" />
+    </div>
+    <div class="mb-3">
+        <label for="Mail" class="form-label">Email</label>
+        <InputText id="Mail" class="form-control" @bind-Value="currentUser.Mail" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Cancel</button>
+</EditForm>
+
+@code {
+    private UserDTO currentUser = new UserDTO { UserType = new UserTypeDTO() };
+    private List<UserTypeDTO> userTypes = new List<UserTypeDTO>();
+
+    [Parameter] public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        userTypes = await ApiService.GetUserTypes();
+        currentUser = await ApiService.GetUserById(Id);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var isUpdated = await ApiService.UpdateUser(currentUser.Id, currentUser);
+
+        if (isUpdated)
+        {
+            NavigateBack();
+        }
+        else
+        {
+            Console.WriteLine("Failed to update the user.");
+        }
+    }
+
+    private void NavigateBack()
+    {
+        Navigation.NavigateTo("/Auth/Users", forceLoad: false);
+        Navigation.Refresh();
+    }
+}

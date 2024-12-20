@@ -1,0 +1,77 @@
+﻿@page "/Auth/Users/Add"
+@using System.ComponentModel.DataAnnotations
+@using Jobify.Api.DTOs
+@using Jobify.Api.Service
+@inject ApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Add User</PageTitle>
+
+<h3>Add User</h3>
+
+<EditForm Model="@newUser" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-floating mb-3">
+        <select id="userType" class="form-select" @bind="newUser.UserType.Id">
+            <option value="">Select User Type</option>
+            @foreach (var userType in userTypes)
+            {
+                <option value="@userType.Id">@userType.Name</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <InputText id="Name" class="form-control" @bind-Value="newUser.Name" />
+    </div>
+    <div class="mb-3">
+        <label for="Surname" class="form-label">Surname</label>
+        <InputText id="Surname" class="form-control" @bind-Value="newUser.Surname" />
+    </div>
+    <div class="mb-3">
+        <label for="Mail" class="form-label">Email</label>
+        <InputText id="Mail" class="form-control" @bind-Value="newUser.Mail" />
+    </div>
+    <div class="mb-3">
+        <label for="Password" class="form-label">Password</label>
+        <InputText id="Password" type="password" class="form-control" @bind-Value="newUser.Password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Cancel</button>
+</EditForm>
+
+@code {
+    private UserDTO newUser = new UserDTO
+        {
+            UserType = new UserTypeDTO()
+        };
+    private List<UserTypeDTO> userTypes = new List<UserTypeDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        userTypes = await ApiService.GetUserTypes();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await ApiService.CreateUser(newUser);
+        if (result.IsSuccessStatusCode)
+        {
+            NavigateBack();
+        }
+        else
+        {
+            Console.WriteLine("Failed to add user.");
+        }
+    }
+
+    private void NavigateBack()
+    {
+        Navigation.NavigateTo("/Auth/Users", forceLoad: false);
+        Navigation.Refresh();
+    }
+}
