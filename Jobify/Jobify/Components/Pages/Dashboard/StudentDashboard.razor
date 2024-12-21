@@ -139,6 +139,7 @@
     private List<JobApp> jobApps = new List<JobApp>();
     private List<JobOffer> jobOffers = new List<JobOffer>();
     private JobAd jobAd;
+    private int id = 2;
 
     protected override async Task OnInitializedAsync()
     {
@@ -149,7 +150,7 @@
 
     private void LoadJobApps()
     {
-        jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(1);
+        jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
     }
 
     private async Task CancelApplication(int id)
@@ -182,7 +183,7 @@
 
     private void LoadAcceptedApplications()
     {
-        jobOffers = DbQueryProvider.Service.GetAllJobOffersByStudentId(1);
+        jobOffers = DbQueryProvider.Service.GetAllJobOffersByStudentId(id);
     }
 
     private string GetJobAdTitle(int id)

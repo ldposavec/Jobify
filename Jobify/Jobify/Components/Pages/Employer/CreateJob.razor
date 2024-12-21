@@ -121,6 +121,7 @@
 @code {
     private JobAd newJobAd = new JobAd();
     private List<Status> statuses = new List<Status>();
+    private int id = 2;
 
     override protected void OnInitialized()
     {
@@ -138,7 +139,7 @@
         if (newJobAd is not null)
         {
             Console.WriteLine("Title: " + newJobAd.Title);
-            DbQueryProvider.Service.AddNewJobAd(1, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
+            DbQueryProvider.Service.AddNewJobAd(id, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
             await JSRuntime.InvokeVoidAsync("alert", "Job Ad created successfully!");
         }
     }

@@ -84,6 +84,8 @@ else
     private JobAd? selectedJob = null;
     private bool isModalVisible = false;
     private string? uploadedCvPath = null;
+    private int id = 2;
+    private static string uploadPath = "wwwroot/uploads/cv";
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,7 +118,8 @@ else
         {
             try
             {
-                var filePath = Path.Combine("wwwroot/uploads/cv", file.Name);
+                Directory.CreateDirectory(uploadPath);
+                var filePath = Path.Combine(uploadPath, file.Name);
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await file.OpenReadStream().CopyToAsync(stream);
                 uploadedCvPath = filePath;
@@ -144,13 +147,13 @@ else
         var jobApp = new JobApp()
             {
                 JobAdId = selectedJob.Id,
-                StudentId = 1,
+                StudentId = id,
                 CreatedAt = DateTime.Now,
                 CvFilepath = uploadedCvPath,
                 StatusId = (int)StatusEnum.Pending
             };
 
-        DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, 1, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
+        DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, id, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
         await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
         HideModal();
     }

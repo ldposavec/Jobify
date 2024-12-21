@@ -90,6 +90,7 @@
     private List<JobApp> selectedJobApps = new List<JobApp>();
     private List<Student> selectedStudents = new List<Student>();
     private bool isModalVisible = false;
+    private int id = 2;
 
     protected override async Task OnInitializedAsync()
     {
@@ -99,7 +100,7 @@
 
     private void LoadJobAds()
     {
-        jobAds = DbQueryProvider.Service.GetAllJobAdsByEmployerId(1);
+        jobAds = DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
     }
 
     private int GetNumberOfApplications(int jobAdId)
