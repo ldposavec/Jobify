@@ -2,7 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Jobify.Api.DTOs
 @using Jobify.Api.Service
-@inject ApiService ApiService
+@inject IApiService ApiService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
@@ -10,79 +10,137 @@
 
 <h3>Users</h3>
 
-<div class="d-flex justify-content-between">
-    <div class="ms-auto">
-        <button class="btn btn-success" @onclick="NavigateToAddUser">Add User</button>
+@if (IsNavigating)
+{
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="d-flex justify-content-between">
+        <div class="ms-auto">
+            <button class="btn btn-success" @onclick="NavigateToAddUser">Add User</button>
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Email Verified</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in users)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@user.Name</td>
-                <td>@user.Surname</td>
-                <td>@user.Mail</td>
-                <td>@user.UserType.Name</td>
-                <td>@(user.IsEmailVerified ? "Yes" : "No")</td>
-                <td>
-                    <button class="btn btn-primary" @onclick="() => EditUser(user.Id)">Edit</button>
-                    <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Delete</button>
-                </td>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>User Type</th>
+                <th>Email Verified</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Surname</td>
+                    <td>@user.Mail</td>
+                    <td>@user.UserType.Name</td>
+                    <td>@(user.IsEmailVerified ? "Yes" : "No")</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditUser(user.Id)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => ShowDeleteUser(user)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-
+@if (showDeleteConfirmation)
+{
+    <div class="modal d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDeleteConfirmation"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete @currentUser.UserType.Name.ToLower() 
+                        @currentUser.Name @currentUser.Surname?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseDeleteConfirmation">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDeleteUser">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
 
 @code {
     private List<UserDTO> users = new List<UserDTO>();
     private UserDTO currentUser = new UserDTO();
+    private bool showDeleteConfirmation = false;
+    private bool IsNavigating { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
-        users = await ApiService.GetUsers();
+        try
+        {
+            users = await ApiService.GetAllAsync<UserDTO>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading users: {ex.Message}");
+        }
+        finally
+        {
+            IsNavigating = false; 
+        }
     }
 
     private void NavigateToAddUser()
     {
-        Navigation.NavigateTo("/Auth/Users/Add", forceLoad: false);
-        Navigation.Refresh();
+        NavigateToUrl("/Auth/Users/Add");
     }
 
     private void EditUser(int userId)
     {
-        Navigation.NavigateTo($"/Auth/Users/Edit/{userId}", forceLoad: false);
-        Navigation.Refresh();
+        NavigateToUrl($"/Auth/Users/Edit/{userId}");
     }
 
-    private async Task DeleteUser(int userId)
+    private void ShowDeleteUser(UserDTO user)
     {
-        var isDeleted = await ApiService.DeleteUser(userId);
+        currentUser = user;
+        showDeleteConfirmation = true;
+    }
 
+    private void CloseDeleteConfirmation()
+    {
+        showDeleteConfirmation = false;
+    }
+
+    private async Task ConfirmDeleteUser()
+    {
+        var isDeleted = await ApiService.DeleteAsync<UserDTO>(currentUser.Id);
         if (isDeleted)
         {
-            var userToDelete = users.FirstOrDefault(u => u.Id == userId);
-            if (userToDelete != null)
-            {
-                users.Remove(userToDelete);
-            }
+            users.Remove(currentUser);
         }
         else
         {
             Console.WriteLine("Failed to delete the user.");
         }
+        showDeleteConfirmation = false;
+    }
+
+    private void NavigateToUrl(string url)
+    {
+        IsNavigating = true;
+        Navigation.NavigateTo(url, forceLoad: false);
+        Navigation.Refresh();
     }
 }

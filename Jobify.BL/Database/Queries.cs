@@ -1,5 +1,6 @@
 ﻿using Jobify.BL.DALModels;
 using Jobify.BL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,9 +106,9 @@ namespace Jobify.BL.Database
             return _context.JobAds.ToList();
         }
 
-        public List<JobAd> GetAllJobAdsByEmployerId(int employerId)
+        public async Task<List<JobAd>> GetAllJobAdsByEmployerId(int employerId)
         {
-            return _context.JobAds.Where(ja => ja.EmployerId == employerId).ToList();
+            return await _context.JobAds.Where(ja => ja.EmployerId == employerId).ToListAsync();
         }
 
         public List<JobApp> GetAllJobApps()
@@ -120,9 +121,9 @@ namespace Jobify.BL.Database
             return _context.JobApps.Where(ja => ja.JobAd.EmployerId == employerId).ToList();
         }
 
-        public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
+        public async Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId)
         {
-            return _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToList();
+            return await _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToListAsync();
         }
 
         public List<JobApp> GetAllJobAppsByStudentId(int studentId)

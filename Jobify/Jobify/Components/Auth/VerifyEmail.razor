@@ -1,7 +1,7 @@
 ﻿@page "/Auth/VerifyEmail"
 @using Jobify.Api.Service
 @using Microsoft.AspNetCore.WebUtilities
-@inject ApiService ApiService
+@inject IAccountApiService AccountApiService
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
@@ -19,7 +19,7 @@
 
             if (query.TryGetValue("token", out var token))
             {
-                var response = await ApiService.VerifyEmailAsync(token);
+                var response = await AccountApiService.VerifyEmailAsync(token);
                 if (response.IsSuccessStatusCode)
                 {
                     StatusMessage = "Your email has been successfully verified!";

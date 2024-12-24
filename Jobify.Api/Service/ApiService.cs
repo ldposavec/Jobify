@@ -4,135 +4,80 @@ using System.Net.Http;
 
 namespace Jobify.Api.Service
 {
-    public class ApiService
+    public class ApiService : IApiService
     {
         private const string CLIENT = "Jobify.Api";
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly HttpClient _client;
 
+        private readonly Dictionary<Type, string> _baseRoutes = new()
+        {
+            { typeof(UserDTO), ApiRoutes.User.Base }
+        };
         public ApiService(IHttpClientFactory clientFactory)
         {
-            _clientFactory = clientFactory;
+            _client = clientFactory.CreateClient(CLIENT);
         }
-
-        public async Task<HttpResponseMessage> RegisterEmployerAsync(EmployerRegistrationDTO dto)
+        private string GetRouteForType<T>()
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.Employer.Register, dto);
-            return response; 
+            if (_baseRoutes.TryGetValue(typeof(T), out var route))
+            {
+                return route;
+            }
+            throw new Exception($"Route not defined for type {typeof(T).Name}");
         }
-
-        public async Task<HttpResponseMessage> VerifyEmailAsync(string token)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.GetAsync($"api/Employer/verify-email?token={token}");
-            return response;
-        }        
-        
-        public async Task<HttpResponseMessage> GetJwtTokenAsync(string email)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.Employer.JWT, email);
-            return response;
-        }
-
-        public async Task<HttpResponseMessage> RegisterStudentAsync(StudentRegistrationDTO dto)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.Student.Register, dto);
-            return response;
-        }
-
         public async Task<List<UserTypeDTO>> GetUserTypes()
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.GetAsync(ApiRoutes.UserType.Base);
+            var response = await _client.GetAsync(ApiRoutes.UserType.Base);
             if (response.IsSuccessStatusCode)
             {
                 var userTypes = await response.Content.ReadFromJsonAsync<List<UserTypeDTO>>();
                 return userTypes ?? new List<UserTypeDTO>();
             }
             throw new Exception("Error fetching user types.");
-        }        
-        
-        public async Task<HttpResponseMessage> LoginAsync(LoginDTO dto)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.User.Login, dto);
-            return response;
-        }        
-        
-        public async Task<HttpResponseMessage> ChangePasswordAsync(UserChangePasswordDto dto)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.User.ChangePassword, dto);
-            return response;
-        }
-        public async Task<HttpResponseMessage> SendPasswordResetEmailAsync(string email)
-        {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var requestUri = $"{ApiRoutes.User.SendPasswordResetEmail}?email={Uri.EscapeDataString(email)}";
-            var response = await client.PostAsync(requestUri, null); 
-            return response;
         }
 
-        public async Task<List<UserDTO>> GetUsers()
+        public async Task<List<T>> GetAllAsync<T>()
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.GetAsync(ApiRoutes.User.Base);
-
+            var route = GetRouteForType<T>();
+            var response = await _client.GetAsync(route);
             if (response.IsSuccessStatusCode)
             {
-                var users = await response.Content.ReadFromJsonAsync<List<UserDTO>>();
-                return users ?? new List<UserDTO>();
+                var data = await response.Content.ReadFromJsonAsync<List<T>>();
+                return data ?? new List<T>();
             }
-            throw new Exception("Error fetching users.");
+            throw new Exception($"Error fetching data from {route}");
         }
 
-        public async Task<bool> DeleteUser(int id)
+        public async Task<T> GetByIdAsync<T>(int id)
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.DeleteAsync($"{ApiRoutes.User.Base}/{id}");
-
+            var route = $"{GetRouteForType<T>()}/{id}";
+            var response = await _client.GetAsync(route);
             if (response.IsSuccessStatusCode)
             {
-                return true;  
+                var data = await response.Content.ReadFromJsonAsync<T>();
+                return data ?? Activator.CreateInstance<T>();
             }
-
-            throw new Exception("Error deleting user.");
+            throw new Exception($"Error fetching data from {route}");
         }
 
-        public async Task<HttpResponseMessage> CreateUser(UserDTO user)
+        public async Task<HttpResponseMessage> CreateAsync<T>(T entity)
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PostAsJsonAsync(ApiRoutes.User.Base, user);
-            return response;
+            var route = GetRouteForType<T>();
+            return await _client.PostAsJsonAsync(route, entity);
         }
 
-        public async Task<bool> UpdateUser(int userId, UserDTO user)
+        public async Task<bool> UpdateAsync<T>(int id, T entity)
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.PutAsJsonAsync($"{ApiRoutes.User.Base}/{userId}", user);
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-
-            throw new Exception("Error updating user.");
+            var route = $"{GetRouteForType<T>()}/{id}";
+            var response = await _client.PutAsJsonAsync(route, entity);
+            return response.IsSuccessStatusCode;
         }
 
-        public async Task<UserDTO> GetUserById(int userId)
+        public async Task<bool> DeleteAsync<T>(int id)
         {
-            var client = _clientFactory.CreateClient(CLIENT);
-            var response = await client.GetAsync($"{ApiRoutes.User.Base}/{userId}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var user = await response.Content.ReadFromJsonAsync<UserDTO>();
-                return user ?? new UserDTO();
-            }
-            
-            throw new Exception($"Failed to fetch user with ID {userId}.");
+            var route = $"{GetRouteForType<T>()}/{id}";
+            var response = await _client.DeleteAsync(route);
+            return response.IsSuccessStatusCode;
         }
-
     }
 }

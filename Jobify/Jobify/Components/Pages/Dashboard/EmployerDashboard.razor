@@ -7,39 +7,40 @@
 
 <h3>Employer Dashboard</h3>
 <div class="container">
-    <div class="row">
-        <div class="col-6">
-            <h4>My Offers</h4>
-            @if (jobAds == null)
-            {
-                <p>Loading job offers...</p>
-            }
-            else if (jobAds.Count == 0)
-            {
-                <p>No job offers found.</p>
-            }
-            else
-            {
-                <div class="card-deck">
-                    <div class="row">
-                        @foreach (var job in jobAds.Distinct())
-                        {
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@job.Title</h5>
-                                        <p class="card-text">@job.Description</p>
-                                        <p><strong>Applications:</strong> @GetNumberOfApplications(job.Id)</p>
-                                        <button class="btn btn-primary" @onclick="() => OpenManageModal(job.Id)">Manage</button>
-                                    </div>
-                                </div>
+    <h4>My Offers</h4>
+    @if (jobAds == null)
+    {
+        <p>Loading job offers...</p>
+    }
+    else if (jobAds.Count == 0)
+    {
+        <p>No job offers found.</p>
+    }
+    else
+    {
+        <div class="card-deck">
+            <div class="row">
+                @foreach (var job in jobAds.Distinct())
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@job.Title</h5>
+                                <p class="card-text">
+                                    @TruncateText(job.Description, 25)
+                                    <button class="btn btn-outline-warning" @onclick="() => OpenDescriptionModal(job.Description)">
+                                        Read More
+                                    </button>
+                                </p>
+                                <p><strong>Applications:</strong> @GetNumberOfApplications(job.Id)</p>
+                                <button class="btn btn-primary" @onclick="() => OpenManageModal(job.Id)">Manage</button>
                             </div>
-                        }
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 
@@ -84,28 +85,68 @@
     </div>
 </div>
 
+<div class="modal fade @(isDescriptionModalVisible ? "show d-block" : "")" id="descriptionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Job Description</h5>
+                <button type="button" class="close" @onclick="CloseDescriptionModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@fullJobDescription</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseDescriptionModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
     private List<JobAd> jobAds = new List<JobAd>();
     private List<JobApp> jobApps = new List<JobApp>();
     private List<JobApp> selectedJobApps = new List<JobApp>();
     private List<Student> selectedStudents = new List<Student>();
     private bool isModalVisible = false;
+    private bool isDescriptionModalVisible = false;
+    private string fullJobDescription = string.Empty;
     private int id = 2;
 
     protected override async Task OnInitializedAsync()
     {
         DbQueryProvider.Init();
-        LoadJobAds();
+        await LoadJobAds();
+        await Task.Delay(2500);
     }
 
-    private void LoadJobAds()
+    private async Task LoadJobAds()
     {
-        jobAds = DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
+        jobAds = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
     }
 
     private int GetNumberOfApplications(int jobAdId)
     {
-        return DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId).Count;
+        return selectedJobApps.Count; // maybe will need fixing
+    }
+
+    private string TruncateText(string text, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+        return text.Length > maxLength ? $"{text.Substring(0, maxLength)}..." : text;
+    }
+
+    private void OpenDescriptionModal(string description)
+    {
+        fullJobDescription = description;
+        isDescriptionModalVisible = true;
+    }
+
+    private void CloseDescriptionModal()
+    {
+        isDescriptionModalVisible = false;
+        fullJobDescription = string.Empty;
     }
 
     private void UpdateSelection(JobApp app, bool value)
@@ -116,7 +157,7 @@
 
     private async Task OpenManageModal(int jobAdId)
     {
-        selectedJobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        selectedJobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
         foreach (var app in selectedJobApps)
         {
             selectedStudents.Clear();

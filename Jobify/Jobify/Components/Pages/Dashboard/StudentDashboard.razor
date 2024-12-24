@@ -146,6 +146,7 @@
         DbQueryProvider.Init();
         LoadJobApps();
         LoadAcceptedApplications();
+        await Task.Delay(1000);
     }
 
     private void LoadJobApps()

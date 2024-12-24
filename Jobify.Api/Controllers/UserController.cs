@@ -173,7 +173,7 @@ namespace Jobify.Api.Controllers
                 var jwtProvider = new JwtTokenProvider(_configuration);
                 var token = jwtProvider.GenerateEmailVerificationToken(existingUser.Mail, existingUser.UserType.Name);
 
-                return Ok(new { Token = token });
+                return Ok(new { Token = token, Role = existingUser.UserType.Name });
             }
             catch (Exception ex)
             {

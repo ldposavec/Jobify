@@ -22,8 +22,8 @@ namespace Jobify.BL.Interfaces
         List<JobOffer> GetAllJobOffers();
         List<JobApp> GetAllJobAppsByStudentId(int studentId);
         List<JobApp> GetAllJobAppsByEmployerId(int employerId);
-        List<JobAd> GetAllJobAdsByEmployerId(int employerId);
-        List<JobApp> GetAllJobAppsByJobAdId(int jobAdId);
+        Task<List<JobAd>> GetAllJobAdsByEmployerId(int employerId);
+        Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId);
         List<JobOffer> GetAllJobOffersByStudentId(int studentId);
         JobAd GetJobAdById(int id);
         JobApp GetJobAppById(int id);

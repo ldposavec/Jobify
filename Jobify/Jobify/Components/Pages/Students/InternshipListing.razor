@@ -40,7 +40,12 @@ else
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@job.Title</h5>
-                    <p class="card-text">@job.Description</p>
+                    <p class="card-text">
+                        @TruncateText(job.Description, 25)
+                        <button class="btn btn-outline-warning" @onclick="() => OpenDescriptionModal(job.Description)">
+                            Read More
+                        </button>
+                    </p>
                     <hr />
                     <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
                     <button class="btn btn-primary" @onclick="() => ShowJobDetails(job)">Apply</button>
@@ -65,7 +70,8 @@ else
             </div>
             <div class="modal-body">
                 <p>@selectedJob?.Description</p>
-                <p><strong>Salary:</strong> @selectedJob?.Salary€</p>
+
+                <p><strong>Salary:</strong> @selectedJob?.Salary €</p>
                 <hr />
                 <label for="cvUpload">Upload your CV (PDF):</label>
                 <InputFile id="cvUpload" OnChange="HandleFileUpload" />
@@ -73,6 +79,25 @@ else
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @onclick="HideModal">Close</button>
                 <button type="button" class="btn btn-primary" @onclick="ApplyForJob">Submit Application</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade @(isDescriptionModalVisible ? "show d-block" : "")" id="descriptionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Job Description</h5>
+                <button type="button" class="close" @onclick="CloseDescriptionModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>@fullJobDescription</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseDescriptionModal">Close</button>
             </div>
         </div>
     </div>
@@ -86,6 +111,8 @@ else
     private string? uploadedCvPath = null;
     private int id = 2;
     private static string uploadPath = "wwwroot/uploads/cv";
+    private bool isDescriptionModalVisible = false;
+    private string fullJobDescription = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,6 +123,24 @@ else
     private void LoadJobAds()
     {
         jobAds = DbQueryProvider.Service.GetAllJobAds();
+    }
+
+    private string TruncateText(string text, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+        return text.Length > maxLength ? $"{text.Substring(0, maxLength)}..." : text;
+    }
+
+    private void OpenDescriptionModal(string description)
+    {
+        fullJobDescription = description;
+        isDescriptionModalVisible = true;
+    }
+
+    private void CloseDescriptionModal()
+    {
+        isDescriptionModalVisible = false;
+        fullJobDescription = string.Empty;
     }
 
     private void ShowJobDetails(JobAd job)
