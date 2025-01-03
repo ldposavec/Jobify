@@ -41,7 +41,7 @@ public partial class JobifyContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //=> optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
         //=> optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Jobify");
-        => optionsBuilder.UseNpgsql("Host=truly-universal-spitz.data-1.use1.tembo.io;Port=5432;Username=postgres;Password=y2csSQsBqEyAi4c6");
+        => optionsBuilder.UseNpgsql("Host=truly-universal-spitz.data-1.use1.tembo.io;Port=5432;Username=postgres;Password=y2csSQsBqEyAi4c6").UseLazyLoadingProxies();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

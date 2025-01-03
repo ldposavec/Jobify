@@ -126,10 +126,10 @@ namespace Jobify.BL.Database
             return await _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToListAsync();
         }
 
-        public List<JobApp> GetAllJobAppsByStudentId(int studentId)
+        public async Task<List<JobApp>> GetAllJobAppsByStudentId(int studentId)
         {
-            return _context.JobApps.Where(ja => ja.StudentId == studentId).ToList();
-        }
+            return await _context.JobApps.Where(ja => ja.StudentId == studentId).ToListAsync();
+        } 
 
         public List<JobOffer> GetAllJobOffers()
         {

@@ -20,7 +20,7 @@ namespace Jobify.BL.Interfaces
         List<Status> GetAllStatuses();
         List<JobApp> GetAllJobApps();
         List<JobOffer> GetAllJobOffers();
-        List<JobApp> GetAllJobAppsByStudentId(int studentId);
+        Task<List<JobApp>> GetAllJobAppsByStudentId(int studentId); 
         List<JobApp> GetAllJobAppsByEmployerId(int employerId);
         Task<List<JobAd>> GetAllJobAdsByEmployerId(int employerId);
         Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId);

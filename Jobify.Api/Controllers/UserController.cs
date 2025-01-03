@@ -17,14 +17,14 @@ namespace Jobify.Api.Controllers
 
     public class UserController : ControllerBase
     {
-        private readonly IRepository<User> _repository;
+        private readonly UserRepository _repository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         public UserController(IRepositoryFactory repositoryFactory, IPasswordHasher<User> passwordHasher, IMapper mapper, IConfiguration configuration)
         {
-            _repository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _repository = repositoryFactory.GetRepository<UserRepository>(); ;
             _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
             _passwordHasher = passwordHasher;
             _mapper = mapper;
@@ -163,6 +163,9 @@ namespace Jobify.Api.Controllers
                 {
                     return Unauthorized(genericLoginFail);
                 }
+
+                var userType = _userTypeRepository.GetById(existingUser.UserTypeId);
+                existingUser.UserType = userType;
 
                 var verificationResult = _passwordHasher.VerifyHashedPassword(null, existingUser.Password, loginDto.Password);
                 if (verificationResult != PasswordVerificationResult.Success)

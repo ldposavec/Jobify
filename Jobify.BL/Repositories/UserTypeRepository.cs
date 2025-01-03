@@ -27,7 +27,7 @@ namespace Jobify.BL.Repositories
 
         public UserType? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.UserTypes.FirstOrDefault(ut => ut.Id == id);
         }
 
         public void Insert(UserType entity)

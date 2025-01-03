@@ -144,14 +144,14 @@
     protected override async Task OnInitializedAsync()
     {
         DbQueryProvider.Init();
-        LoadJobApps();
+        await LoadJobApps();
         LoadAcceptedApplications();
         await Task.Delay(1000);
     }
 
-    private void LoadJobApps()
+    private async Task LoadJobApps() 
     {
-        jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
+        jobApps = await DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
     }
 
     private async Task CancelApplication(int id)
