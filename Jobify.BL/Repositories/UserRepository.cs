@@ -12,13 +12,5 @@ namespace Jobify.BL.Repositories
     {
         public UserRepository(JobifyContext context) : base(context) { }
 
-        //public override IEnumerable<User> GetAll()
-        //{
-        //    return _context.Set<User>().Include(u => u.UserType).ToList();
-        //}
-        //public override User? GetById(int id)
-        //{
-        //    return _context.Set<User>().Include(u => u.UserType).FirstOrDefault(u => u.Id == id);
-        //}
     }
 }

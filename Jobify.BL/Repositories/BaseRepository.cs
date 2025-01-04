@@ -9,11 +9,12 @@ namespace Jobify.BL.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : class
     {
-        protected readonly JobifyContext _context;
+        private readonly JobifyContext _context;
         public BaseRepository(JobifyContext context)
         {
             _context = context;
         }
+        protected JobifyContext Context => _context;
         public T Delete(int id)
         {
             var entity = GetById(id);
