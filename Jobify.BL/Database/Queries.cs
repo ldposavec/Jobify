@@ -62,7 +62,7 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
-        public void AddNewNotifications(List<int> userId, string message)
+        public void AddNewNotifications(List<int> userId, string message, int jobAppId)
         {
             foreach (var id in userId)
             {
@@ -70,6 +70,7 @@ namespace Jobify.BL.Database
                 {
                     UserId = id,
                     Message = message,
+                    JobAppId = jobAppId,
                     CreatedAt = DateTime.Now
                 };
 

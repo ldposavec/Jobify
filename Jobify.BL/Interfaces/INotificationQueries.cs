@@ -8,6 +8,6 @@ namespace Jobify.BL.Interfaces
 {
     public interface INotificationQueries
     {
-        void AddNewNotifications(List<int> userIds, string message);
+        void AddNewNotifications(List<int> userIds, string message, int jobAppId);
     }
 }
