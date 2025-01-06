@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Jobify.BL.Interfaces
 {
-    public interface IQueries : IJobAppsQueries, IJobAdQueries, IStatusQueries, IJobOfferQueries, IStudentQueries, INotificationQueries, IUserQueries, IEmployerQueries
+    public interface IUserQueries
     {
+        List<User> GetAllUsersByJobAppId(int jobAppId);
     }
 }

@@ -5,6 +5,9 @@
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
+
 <h3>Employer Dashboard</h3>
 <div class="container">
     <h4>My Offers</h4>
@@ -105,6 +108,9 @@
 </div>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobAd> jobAds = new List<JobAd>();
     private List<JobApp> jobApps = new List<JobApp>();
     private List<JobApp> selectedJobApps = new List<JobApp>();
@@ -116,15 +122,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         await LoadJobAds();
-        await Task.Delay(2500);
     }
 
     private async Task LoadJobAds()
     {
         jobAds = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
     }
+
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
 
     private int GetNumberOfApplications(int jobAdId)
     {
@@ -167,13 +178,22 @@
 
     private async Task UpdateApplications(StatusEnum status)
     {
-        foreach (var app in selectedJobApps.Where(a => selectedStudents.Contains(DbQueryProvider.Service.GetStudentById(a.StudentId))))
+        try
         {
-            app.StatusId = (int)status;
-            DbQueryProvider.Service.UpdateJobApp(app);
+            foreach (var app in selectedJobApps.Where(a => selectedStudents.Contains(DbQueryProvider.Service.GetStudentById(a.StudentId))))
+            {
+                app.StatusId = (int)status;
+                DbQueryProvider.Service.UpdateJobApp(app);
+            }
+            await CloseManageModal();
+            messages.Add(CreateToastMessage(ToastType.Success, "Applications updated successfully!"));
+            await LoadJobAds();
         }
-        CloseManageModal();
-        LoadJobAds();
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            messages.Add(CreateToastMessage(ToastType.Danger, "Applications cancelled due to error."));
+        }
     }
 
     private async Task CloseManageModal()

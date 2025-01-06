@@ -62,6 +62,23 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
+        public void AddNewNotifications(List<int> userId, string message)
+        {
+            foreach (var id in userId)
+            {
+                Notification notification = new Notification
+                {
+                    UserId = id,
+                    Message = message,
+                    CreatedAt = DateTime.Now
+                };
+
+                _context.Notifications.Add(notification);
+            }
+
+            _context.SaveChanges();
+        }
+
         public void AddNewStatus(string name)
         {
             Status status = new Status
@@ -99,6 +116,11 @@ namespace Jobify.BL.Database
             Status status = _context.Statuses.Find(id);
             _context.Statuses.Remove(status);
             _context.SaveChanges();
+        }
+
+        public List<Employer> GetAllEmployersByJobAddId(int jobAddId)
+        {
+            return _context.Employers.Where(e => e.JobAds.Any(ja => ja.Id == jobAddId)).ToList();
         }
 
         public List<JobAd> GetAllJobAds()
@@ -144,6 +166,27 @@ namespace Jobify.BL.Database
         public List<Status> GetAllStatuses()
         {
             return _context.Statuses.ToList();
+        }
+
+        public List<User> GetAllUsersByJobAppId(int jobAppId)
+        {
+            List<int> ids = new List<int>();
+            var studentIds = _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.StudentId).ToList();
+            var userIds = _context.Students.Where(s => studentIds.Contains(s.Id)).Select(s => s.UserId).ToList();
+            //ids.AddRange(userIds);
+            //foreach (var student in _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.Student))
+            //{
+            //    ids.Add(student.UserId);
+            //}
+            var jobAdId = _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.JobAdId).ToList();
+            var employerIds = _context.JobAds.Where(ja => jobAdId.Contains(ja.Id)).Select(ja => ja.EmployerId).ToList();
+            userIds.AddRange(_context.Employers.Where(e => employerIds.Contains(e.Id)).Select(e => e.UserId).ToList());
+            ids.AddRange(userIds);
+            //foreach (var employer in _context.JobAds.Where(ja => jobAdId.Contains(ja.Id)).Select(ja => ja.Employer))
+            //{
+            //    ids.Add(employer.UserId);
+            //}
+            return _context.Users.Where(u => ids.Contains(u.Id)).ToList();
         }
 
         public JobAd GetJobAdById(int id)

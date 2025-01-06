@@ -5,6 +5,9 @@
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
+
 <h3>Internship Listing</h3>
 
 @if (jobAds == null)
@@ -93,7 +96,7 @@ else
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="white-space: pre-line">
                 <p>@fullJobDescription</p>
             </div>
             <div class="modal-footer">
@@ -104,6 +107,9 @@ else
 </div>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobAd> jobAds = new List<JobAd>();
     private JobApp jobApp;
     private JobAd? selectedJob = null;
@@ -116,7 +122,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         LoadJobAds();
     }
 
@@ -124,6 +129,13 @@ else
     {
         jobAds = DbQueryProvider.Service.GetAllJobAds();
     }
+
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
 
     private string TruncateText(string text, int maxLength)
     {
@@ -172,12 +184,12 @@ else
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                await JSRuntime.InvokeVoidAsync("alert", "An error occurred while uploading your CV. Please try again.");
+                messages.Add(CreateToastMessage(ToastType.Danger, "An error occurred while uploading your CV. Please try again."));
             }
         }
         else
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Please upload a valid PDF file.");
+            messages.Add(CreateToastMessage(ToastType.Danger, "Please upload a valid PDF file."));
         }
     }
 
@@ -185,7 +197,7 @@ else
     {
         if (selectedJob == null || uploadedCvPath == null)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Please upload your CV before submitting.");
+            messages.Add(CreateToastMessage(ToastType.Danger, "Please upload your CV before submitting."));
             return;
         }
 
@@ -199,7 +211,8 @@ else
             };
 
         DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, id, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
-        await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
+        // await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
+        messages.Add(CreateToastMessage(ToastType.Success, "You have successfully applied for the job!"));
         HideModal();
     }
 

@@ -3,9 +3,12 @@
 @inject IJSRuntime JSRuntime
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
+@* @using Blazorise *@
+
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
 
 <h3>StudentDashboard</h3>
-
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -34,9 +37,11 @@
                                         <hr />
                                         <p class="card-text"><strong>Salary:</strong> @GetSalary(job.JobAdId)€</p>
                                         <div class="d-flex justify-content-around">
+                                            @* <ConfirmDialog @ref="dialog" /> *@
                                         @if (job.StatusId == (int)StatusEnum.Approved)
-                                        {
+                                            {
                                             <button class="btn btn-primary m-1" @onclick="() => AcceptApplication(job.Id)">Accept</button>
+                                            @* <Button Color="ButtonColor.Primary" @onclick="() => AcceptApplication(job.Id)">Accept</Button> *@
                                         }
                                         <button class="btn btn-primary m-1" @onclick="() => CancelApplication(job.Id)">Opt out</button>
                                         </div>
@@ -99,7 +104,7 @@
                                         <hr />
                                         <p class="card-text"><strong>Salary:</strong> @GetSalary(GetJobAdId(job.JobAppId))€</p>
                                         <div class="d-flex justify-content-around">
-                                        <button class="btn btn-primary m-1" @onclick="() => CancelApplication(job.JobAppId)">Opt out</button>
+                                            <button class="btn btn-primary m-1" @onclick="() => CancelApplication(job.JobAppId)">Opt out</button>
                                         </div>
                                     </div>
                                     @* <div class="card-footer">
@@ -136,17 +141,19 @@
 </div>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobApp> jobApps = new List<JobApp>();
     private List<JobOffer> jobOffers = new List<JobOffer>();
     private JobAd jobAd;
+    private JobApp jobApp;
     private int id = 2;
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         await LoadJobApps();
         LoadAcceptedApplications();
-        await Task.Delay(1000);
     }
 
     private async Task LoadJobApps() 
@@ -154,9 +161,19 @@
         jobApps = await DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
     }
 
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
+
     private async Task CancelApplication(int id)
     {
-        bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to cancel this job application?");
+        var isConfirmed = await dialog.ShowAsync(
+            title: "Cancel Job Application",
+            message1: "Are you sure you want to cancel this job application?"
+        );
         if (isConfirmed)
         {
             var jobOffer = DbQueryProvider.Service.GetJobOfferByJobAppId(id);
@@ -164,20 +181,31 @@
             var job = DbQueryProvider.Service.GetJobAppById(id);
             if (File.Exists(job.CvFilepath)) File.Delete(job.CvFilepath);
             DbQueryProvider.Service.DeleteJobApp(id);
-            await JSRuntime.InvokeVoidAsync("alert", "Job application cancelled successfully!");
-            LoadJobApps();
+            messages.Add(CreateToastMessage(ToastType.Success, "Job application cancelled successfully!"));
+            await LoadJobApps();
             LoadAcceptedApplications();
+        }
+        else
+        {
+            messages.Add(CreateToastMessage(ToastType.Danger, "Job application cancellation cancelled!"));
         }
     }
 
     private async Task AcceptApplication(int id)
     {
-        bool isConfirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to accept this job application?");
+        var isConfirmed = await dialog.ShowAsync(
+            title: "Accept Job Application",
+            message1: "Are you sure you want to accept this job application?"
+        );
         if (isConfirmed)
         {
             var job = DbQueryProvider.Service.GetJobAppById(id);
             DbQueryProvider.Service.AddNewJobOffer(job.Id, DateTime.Now, job.StatusId);
-            await JSRuntime.InvokeVoidAsync("alert", "Job application accepted successfully!");
+            messages.Add(CreateToastMessage(ToastType.Success, "Job application accepted successfully!"));
+        }
+        else
+        {
+            messages.Add(CreateToastMessage(ToastType.Danger, "Job application acceptance cancelled!"));
         }
         LoadAcceptedApplications();
     }

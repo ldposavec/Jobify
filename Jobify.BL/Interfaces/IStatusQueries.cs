@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Jobify.BL.Interfaces
 {
-    public interface IQueries : IJobAppsQueries, IJobAdQueries, IStatusQueries, IJobOfferQueries, IStudentQueries, INotificationQueries, IUserQueries, IEmployerQueries
+    public interface IStatusQueries
     {
+        void AddNewStatus(string name);
+        List<Status> GetAllStatuses();
+        Status GetStatusById(int id);
+        void DeleteStatus(int id);
     }
 }

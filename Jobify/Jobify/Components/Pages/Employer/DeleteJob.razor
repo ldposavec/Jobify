@@ -3,6 +3,9 @@
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
+
 <PageTitle>Delete Job</PageTitle>
 
 <h3>DeleteJob</h3>
@@ -48,13 +51,15 @@
 </div>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobAd> jobAds = new List<JobAd>();
     private JobAd jobAdToDelete;
     private int selectedJobAdId;
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         LoadJobAds();
     }
 
@@ -63,16 +68,23 @@
         jobAds = DbQueryProvider.Service.GetAllJobAds();
     }
 
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
+
     private async Task HandleValidSubmit()
     {
         jobAdToDelete = jobAds.FirstOrDefault(j => j.Id == selectedJobAdId);
-        if (jobAdToDelete is not null)
+        var isConfirmed = await dialog.ShowAsync("Delete Job Ad", "Are you sure you want to delete this job ad?");
+        if (jobAdToDelete is not null && isConfirmed)
         {
-            Console.WriteLine("Title: " + jobAdToDelete.Title);
             DbQueryProvider.Service.DeleteJobAd(jobAdToDelete.Id);
             jobAds.Remove(jobAdToDelete);
             LoadJobAds();
-            await JSRuntime.InvokeVoidAsync("alert", "Job Ad deleted successfully!");
+            messages.Add(CreateToastMessage(ToastType.Success, "Job Ad deleted successfully!"));
         }
     }
 }

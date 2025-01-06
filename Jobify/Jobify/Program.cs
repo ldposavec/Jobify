@@ -7,6 +7,11 @@ using Jobify.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Jobify.BL.Interfaces;
+using Jobify.BL.Database;
+using Jobify.BL.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +24,8 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<IQueries, Queries>();
+
 
 builder.Services.AddHttpClient("Jobify.Api", client =>
 {
@@ -55,6 +62,16 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+//builder.Services
+//    .AddBlazorise(options =>
+//{
+//    options.Immediate = true;
+//})
+//    .AddBootstrap5Providers();
+var serviceProvider = builder.Services.BuildServiceProvider();
+DbQueryProvider.Init(serviceProvider.GetRequiredService<IQueries>());
+builder.Services.AddBlazorBootstrap();
 
 var app = builder.Build();
 
