@@ -129,30 +129,24 @@
 
     private async Task SendNotifications(int jobAdId)
     {
-        // var jobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
-        // if(jobApps is null || jobApps.Count == 0)
-        // {
-        //     var jobAd = DbQueryProvider.Service.GetJobAdById(jobAdId);
-        //     var employers = DbQueryProvider.Service.GetAllEmployersByJobAddId(jobAdId);
-        //     List<int> userIds = new List<int>();
-        //     foreach (var employer in employers)
-        //     {
-        //         userIds.Add(employer.UserId);
-        //     }
-        //     DbQueryProvider.Service.AddNewNotifications(userIds, $"The job ad {jobAdToEdit.Title} has been updated!");
-        // }
-        // // var userIds = await DbQueryProvider.Service.GetAllUsersByJobAdId(jobAdId);
-        // foreach (var jobApp in jobApps)
-        // {
-        //     // var student = DbQueryProvider.Service.GetStudentById(jobApp.StudentId);
-        //     var users = DbQueryProvider.Service.GetAllUsersByJobAppId(jobApp.Id);
-        //     List<int> userIds = new List<int>();
-        //     foreach (var user in users)
-        //     {
-        //         userIds.Add(user.Id);
-        //     }
-        //     DbQueryProvider.Service.AddNewNotifications(userIds, $"The job ad {jobAdToEdit.Title} has been updated!");
-        // }
+        var jobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        if(jobApps is null || jobApps.Count == 0)
+        {
+            Console.WriteLine("No Job Applications!");
+            return;
+        }
+        // var userIds = await DbQueryProvider.Service.GetAllUsersByJobAdId(jobAdId);
+        foreach (var jobApp in jobApps)
+        {
+            // var student = DbQueryProvider.Service.GetStudentById(jobApp.StudentId);
+            var users = DbQueryProvider.Service.GetAllUsersByJobAppId(jobApp.Id);
+            List<int> userIds = new List<int>();
+            foreach (var user in users)
+            {
+                userIds.Add(user.Id);
+            }
+            DbQueryProvider.Service.AddNewNotifications(userIds, $"The job ad {jobAdToEdit.Title} has been updated!", jobApp.Id);
+        }
     }
 
     private void UpdateFields(ChangeEventArgs e)

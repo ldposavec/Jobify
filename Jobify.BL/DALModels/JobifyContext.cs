@@ -203,6 +203,7 @@ public partial class JobifyContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.JobAppId).HasColumnName("job_app_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
