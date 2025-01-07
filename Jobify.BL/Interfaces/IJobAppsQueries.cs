@@ -10,13 +10,21 @@ namespace Jobify.BL.Interfaces
     public interface IJobAppsQueries
     {
         void AddNewJobApp(int jobAdId, int studentId, DateTime createdAt, string cvFilepath, int statusId);
+        //added
+        void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId);
         List<JobApp> GetAllJobApps();
         Task<List<JobApp>> GetAllJobAppsByStudentId(int studentId);
         List<JobApp> GetAllJobAppsByEmployerId(int employerId);
         Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId);
         JobApp GetJobAppById(int id);
+        //added
+        JobApp GetJobApp(int jobAdId);
         JobOffer GetJobOfferByJobAppId(int jobAppId);
         void UpdateJobApp(JobApp jobApp);
+        //added
+        void UpdateJobApplication(JobApp jobApp);
         void DeleteJobApp(int id);
+        //added
+        void DeleteJobApplication(int jobAppId);
     }
 }
