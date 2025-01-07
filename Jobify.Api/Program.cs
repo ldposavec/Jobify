@@ -40,7 +40,7 @@ builder.Services.AddDbContext<JobifyContext>(options =>
 
 //builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<UserRepository, UserRepository>();
 builder.Services.AddScoped<IRepository<Employer>, EmployerRepository>();
 builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
 builder.Services.AddScoped<IRepository<Firm>, FirmRepository>();

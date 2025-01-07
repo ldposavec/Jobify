@@ -3,6 +3,9 @@
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
+
 <PageTitle>Edit Job</PageTitle>
 
 <h3>EditJob</h3>
@@ -83,6 +86,9 @@
 </div>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobAd> jobAds = new List<JobAd>();
     private JobAd jobAdToEdit;
     private JobAd newJobAd = new JobAd();
@@ -90,7 +96,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         LoadJobAds();
     }
 
@@ -99,17 +104,48 @@
         jobAds = DbQueryProvider.Service.GetAllJobAds();
     }
 
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
+
     private async Task HandleValidSubmit()
     {
         jobAdToEdit = jobAds.FirstOrDefault(j => j.Id == selectedJobAdId);
-        if (jobAdToEdit != null)
+        var isConfirmed = await dialog.ShowAsync("Are you sure you want to update this job ad?", "Update Job Ad");
+        if (jobAdToEdit != null && isConfirmed)
         {
             jobAdToEdit.Title = newJobAd.Title;
             jobAdToEdit.Description = newJobAd.Description;
             jobAdToEdit.Salary = newJobAd.Salary;
             jobAdToEdit.StatusId = newJobAd.StatusId;
             DbQueryProvider.Service.UpdateJobAd(jobAdToEdit);
-            await JSRuntime.InvokeVoidAsync("alert", "Job Ad updated successfully!");
+            await SendNotifications(jobAdToEdit.Id);
+            messages.Add(CreateToastMessage(ToastType.Success, "Job Ad updated successfully!"));
+        }
+    }
+
+    private async Task SendNotifications(int jobAdId)
+    {
+        var jobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        if(jobApps is null || jobApps.Count == 0)
+        {
+            Console.WriteLine("No Job Applications!");
+            return;
+        }
+        // var userIds = await DbQueryProvider.Service.GetAllUsersByJobAdId(jobAdId);
+        foreach (var jobApp in jobApps)
+        {
+            // var student = DbQueryProvider.Service.GetStudentById(jobApp.StudentId);
+            var users = DbQueryProvider.Service.GetAllUsersByJobAppId(jobApp.Id);
+            List<int> userIds = new List<int>();
+            foreach (var user in users)
+            {
+                userIds.Add(user.Id);
+            }
+            DbQueryProvider.Service.AddNewNotifications(userIds, $"The job ad {jobAdToEdit.Title} has been updated!", jobApp.Id);
         }
     }
 

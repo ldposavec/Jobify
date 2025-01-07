@@ -5,6 +5,9 @@
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+<ConfirmDialog @ref="dialog" />
+
 <h3>Internship Listing</h3>
 
 @if (jobAds == null)
@@ -40,7 +43,12 @@ else
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@job.Title</h5>
-                    <p class="card-text">@job.Description</p>
+                    <p class="card-text">
+                        @TruncateText(job.Description, 25)
+                        <button class="btn btn-outline-warning" @onclick="() => OpenDescriptionModal(job.Description)">
+                            Read More
+                        </button>
+                    </p>
                     <hr />
                     <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
                     <button class="btn btn-primary" @onclick="() => ShowJobDetails(job)">Apply</button>
@@ -65,7 +73,8 @@ else
             </div>
             <div class="modal-body">
                 <p>@selectedJob?.Description</p>
-                <p><strong>Salary:</strong> @selectedJob?.Salary€</p>
+
+                <p><strong>Salary:</strong> @selectedJob?.Salary €</p>
                 <hr />
                 <label for="cvUpload">Upload your CV (PDF):</label>
                 <InputFile id="cvUpload" OnChange="HandleFileUpload" />
@@ -78,22 +87,72 @@ else
     </div>
 </div>
 
+<div class="modal fade @(isDescriptionModalVisible ? "show d-block" : "")" id="descriptionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Job Description</h5>
+                <button type="button" class="close" @onclick="CloseDescriptionModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-line">
+                <p>@fullJobDescription</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseDescriptionModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+    private ConfirmDialog dialog = default!;
+
     private List<JobAd> jobAds = new List<JobAd>();
     private JobApp jobApp;
     private JobAd? selectedJob = null;
     private bool isModalVisible = false;
     private string? uploadedCvPath = null;
+    private int id = 2;
+    private static string uploadPath = "wwwroot/uploads/cv";
+    private bool isDescriptionModalVisible = false;
+    private string fullJobDescription = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        DbQueryProvider.Init();
         LoadJobAds();
     }
 
     private void LoadJobAds()
     {
         jobAds = DbQueryProvider.Service.GetAllJobAds();
+    }
+
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
+
+    private string TruncateText(string text, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+        return text.Length > maxLength ? $"{text.Substring(0, maxLength)}..." : text;
+    }
+
+    private void OpenDescriptionModal(string description)
+    {
+        fullJobDescription = description;
+        isDescriptionModalVisible = true;
+    }
+
+    private void CloseDescriptionModal()
+    {
+        isDescriptionModalVisible = false;
+        fullJobDescription = string.Empty;
     }
 
     private void ShowJobDetails(JobAd job)
@@ -116,7 +175,8 @@ else
         {
             try
             {
-                var filePath = Path.Combine("wwwroot/uploads/cv", file.Name);
+                Directory.CreateDirectory(uploadPath);
+                var filePath = Path.Combine(uploadPath, file.Name);
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await file.OpenReadStream().CopyToAsync(stream);
                 uploadedCvPath = filePath;
@@ -124,12 +184,12 @@ else
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                await JSRuntime.InvokeVoidAsync("alert", "An error occurred while uploading your CV. Please try again.");
+                messages.Add(CreateToastMessage(ToastType.Danger, "An error occurred while uploading your CV. Please try again."));
             }
         }
         else
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Please upload a valid PDF file.");
+            messages.Add(CreateToastMessage(ToastType.Danger, "Please upload a valid PDF file."));
         }
     }
 
@@ -137,21 +197,22 @@ else
     {
         if (selectedJob == null || uploadedCvPath == null)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Please upload your CV before submitting.");
+            messages.Add(CreateToastMessage(ToastType.Danger, "Please upload your CV before submitting."));
             return;
         }
 
         var jobApp = new JobApp()
             {
                 JobAdId = selectedJob.Id,
-                StudentId = 1,
+                StudentId = id,
                 CreatedAt = DateTime.Now,
                 CvFilepath = uploadedCvPath,
                 StatusId = (int)StatusEnum.Pending
             };
 
-        DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, 1, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
-        await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
+        DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, id, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
+        // await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
+        messages.Add(CreateToastMessage(ToastType.Success, "You have successfully applied for the job!"));
         HideModal();
     }
 

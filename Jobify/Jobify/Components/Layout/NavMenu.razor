@@ -13,6 +13,13 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <!-- Expandable Nav Item -->
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="employer/createjob">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Create Job
@@ -26,6 +33,11 @@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="employer/editjob">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Edit Job
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="user/internship-offers">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Internship Offers
             </NavLink>
         </div>
         <div class="nav-item px-3">
@@ -43,29 +55,12 @@
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> E Dashboard
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
+@*         <div class="nav-item px-3">
             <NavLink class="nav-link" href="auth">
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
             </NavLink>
-        </div>
+        </div> *@
 
         <AuthorizeView>
             <Authorized>
@@ -86,15 +81,10 @@
             </Authorized>
             <NotAuthorized>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Auth/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                    <NavLink class="nav-link" href="Auth/Login">
+                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Login
                     </NavLink>
                 </div>
-@*                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="Auth/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div> *@
             </NotAuthorized>
         </AuthorizeView>
     </nav>

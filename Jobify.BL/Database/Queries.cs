@@ -1,5 +1,6 @@
 ﻿using Jobify.BL.DALModels;
 using Jobify.BL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,22 @@ namespace Jobify.BL.Database
             _context.JobAds.Add(jobAd);
             _context.SaveChanges();
         }
+        //added
+        public void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId)
+        {
+            JobApp jobApp = new JobApp
+            {
+                JobAdId = jobAdId,
+                StudentId = studentId,
+                CreatedAt = createdAt,
+                CvFilepath = cvFilePath,
+                StatusId = statusId
+            };
 
+            _context.JobApps.Add(jobApp);
+            _context.SaveChanges();
+        }
+        
         public void AddNewJobApp(int jobAdId, int studentId, DateTime createdAt, string cvFilepath, int statusId)
         {
             JobApp jobApp = new JobApp
@@ -61,6 +77,24 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
+        public void AddNewNotifications(List<int> userId, string message, int jobAppId)
+        {
+            foreach (var id in userId)
+            {
+                Notification notification = new Notification
+                {
+                    UserId = id,
+                    Message = message,
+                    JobAppId = jobAppId,
+                    CreatedAt = DateTime.Now
+                };
+
+                _context.Notifications.Add(notification);
+            }
+
+            _context.SaveChanges();
+        }
+
         public void AddNewStatus(string name)
         {
             Status status = new Status
@@ -85,6 +119,13 @@ namespace Jobify.BL.Database
             _context.JobApps.Remove(jobApp);
             _context.SaveChanges();
         }
+        //added
+        public void DeleteJobApplication(int jobAppId)
+        {
+            JobApp jobApp = _context.JobApps.Find(jobAppId);
+            _context.JobApps.Remove(jobApp);
+            _context.SaveChanges();
+        }
 
         public void DeleteJobOffer(int id)
         {
@@ -100,14 +141,21 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
+        public List<Employer> GetAllEmployersByJobAddId(int jobAddId)
+        {
+            return _context.Employers.Where(e => e.JobAds.Any(ja => ja.Id == jobAddId)).ToList();
+        }
+        //modified
         public List<JobAd> GetAllJobAds()
         {
-            return _context.JobAds.ToList();
+            return _context.JobAds
+                .Include(x => x.Status)
+                .ToList();
         }
 
-        public List<JobAd> GetAllJobAdsByEmployerId(int employerId)
+        public async Task<List<JobAd>> GetAllJobAdsByEmployerId(int employerId)
         {
-            return _context.JobAds.Where(ja => ja.EmployerId == employerId).ToList();
+            return await _context.JobAds.Where(ja => ja.EmployerId == employerId).ToListAsync();
         }
 
         public List<JobApp> GetAllJobApps()
@@ -120,15 +168,15 @@ namespace Jobify.BL.Database
             return _context.JobApps.Where(ja => ja.JobAd.EmployerId == employerId).ToList();
         }
 
-        public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
+        public async Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId)
         {
-            return _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToList();
+            return await _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToListAsync();
         }
 
-        public List<JobApp> GetAllJobAppsByStudentId(int studentId)
+        public async Task<List<JobApp>> GetAllJobAppsByStudentId(int studentId)
         {
-            return _context.JobApps.Where(ja => ja.StudentId == studentId).ToList();
-        }
+            return await _context.JobApps.Where(ja => ja.StudentId == studentId).ToListAsync();
+        } 
 
         public List<JobOffer> GetAllJobOffers()
         {
@@ -145,6 +193,27 @@ namespace Jobify.BL.Database
             return _context.Statuses.ToList();
         }
 
+        public List<User> GetAllUsersByJobAppId(int jobAppId)
+        {
+            List<int> ids = new List<int>();
+            var studentIds = _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.StudentId).ToList();
+            var userIds = _context.Students.Where(s => studentIds.Contains(s.Id)).Select(s => s.UserId).ToList();
+            //ids.AddRange(userIds);
+            //foreach (var student in _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.Student))
+            //{
+            //    ids.Add(student.UserId);
+            //}
+            var jobAdId = _context.JobApps.Where(ja => ja.Id == jobAppId).Select(ja => ja.JobAdId).ToList();
+            var employerIds = _context.JobAds.Where(ja => jobAdId.Contains(ja.Id)).Select(ja => ja.EmployerId).ToList();
+            userIds.AddRange(_context.Employers.Where(e => employerIds.Contains(e.Id)).Select(e => e.UserId).ToList());
+            ids.AddRange(userIds);
+            //foreach (var employer in _context.JobAds.Where(ja => jobAdId.Contains(ja.Id)).Select(ja => ja.Employer))
+            //{
+            //    ids.Add(employer.UserId);
+            //}
+            return _context.Users.Where(u => ids.Contains(u.Id)).ToList();
+        }
+
         public JobAd GetJobAdById(int id)
         {
             return _context.JobAds.Find(id);
@@ -153,6 +222,18 @@ namespace Jobify.BL.Database
         public JobApp GetJobAppById(int id)
         {
             return _context.JobApps.Find(id);
+        }
+        //added
+        public JobApp GetJobApp(int jobAdId)
+        {
+            return _context.JobApps.
+                Include(x => x.JobAd).
+                Include(x => x.JobAd.Employer).
+                Include(x => x.JobAd.Employer.Firm).
+                Include(x => x.Student).
+                Include(x => x.Student.User).
+                Include(x => x.Status).
+                First(x => x.JobAdId == jobAdId);
         }
 
         public JobOffer GetJobOfferByJobAppId(int jobAppId)
@@ -177,6 +258,12 @@ namespace Jobify.BL.Database
         }
 
         public void UpdateJobApp(JobApp jobApp)
+        {
+            _context.JobApps.Update(jobApp);
+            _context.SaveChanges();
+        }
+        //added
+        public void UpdateJobApplication(JobApp jobApp)
         {
             _context.JobApps.Update(jobApp);
             _context.SaveChanges();

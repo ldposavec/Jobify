@@ -11,12 +11,31 @@ namespace Jobify.BL.Providers
 {
     public static class DbQueryProvider
     {
-        private static IQueries _service;
-        public static IQueries Service { get => _service; }
+        //private static IQueries _service;
+        //public static IQueries Service { get => _service; }
 
-        public static void Init()
+        //public static void Init()
+        //{
+        //    _service = new Queries(new JobifyContext());
+        //}
+
+        private static IQueries _service;
+
+        public static void Init(IQueries service)
         {
-            _service = new Queries(new JobifyContext());
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+        }
+
+        public static IQueries Service
+        {
+            get
+            {
+                if (_service == null)
+                {
+                    throw new InvalidOperationException("DbQueryProvider has not been initialized.");
+                }
+                return _service;
+            }
         }
     }
 }

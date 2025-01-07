@@ -4,6 +4,8 @@
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
 
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
+
 <PageTitle>Create Job</PageTitle>
 
 <h3>CreateJob</h3>
@@ -119,12 +121,14 @@
 </EditForm>
 
 @code {
+    List<ToastMessage> messages = new List<ToastMessage>();
+
     private JobAd newJobAd = new JobAd();
     private List<Status> statuses = new List<Status>();
+    private int id = 2;
 
     override protected void OnInitialized()
     {
-        DbQueryProvider.Init();
         LoadAllStatus();
     }
 
@@ -133,13 +137,25 @@
         statuses = DbQueryProvider.Service.GetAllStatuses();
     }
 
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
+        {
+            Type = toastType,
+            Title = title,
+            Message = $"{message}{Environment.NewLine}{DateTime.Now}",
+        };
+
     private async Task HandleValidSubmit()
     {
         if (newJobAd is not null)
         {
-            Console.WriteLine("Title: " + newJobAd.Title);
-            DbQueryProvider.Service.AddNewJobAd(1, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
-            await JSRuntime.InvokeVoidAsync("alert", "Job Ad created successfully!");
+            DbQueryProvider.Service.AddNewJobAd(id, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
+            messages.Add(CreateToastMessage(ToastType.Success, "Job Ad created successfully!"));
+            ClearModel();
         }
+    }
+
+    private void ClearModel()
+    {
+        newJobAd = new JobAd();
     }
 }
