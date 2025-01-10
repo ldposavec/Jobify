@@ -139,7 +139,12 @@
 
     private int GetNumberOfApplications(int jobAdId)
     {
-        return selectedJobApps.Count; // maybe will need fixing
+        var jobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+
+        return jobApps.Count;
+        // var jobAppsPerAd = jobApps.Where(a => a.JobAdId == jobAdId);
+        // return jobAppsPerAd.Count();
+        // return selectedJobApps.Count; // maybe will need fixing
     }
 
     private string TruncateText(string text, int maxLength)
@@ -168,7 +173,7 @@
 
     private async Task OpenManageModal(int jobAdId)
     {
-        selectedJobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        selectedJobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdIdAsync(jobAdId);
         foreach (var app in selectedJobApps)
         {
             selectedStudents.Clear();

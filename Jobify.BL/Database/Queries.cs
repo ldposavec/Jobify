@@ -168,7 +168,7 @@ namespace Jobify.BL.Database
             return _context.JobApps.Where(ja => ja.JobAd.EmployerId == employerId).ToList();
         }
 
-        public async Task<List<JobApp>> GetAllJobAppsByJobAdId(int jobAdId)
+        public async Task<List<JobApp>> GetAllJobAppsByJobAdIdAsync(int jobAdId)
         {
             return await _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToListAsync();
         }
@@ -267,6 +267,11 @@ namespace Jobify.BL.Database
         {
             _context.JobApps.Update(jobApp);
             _context.SaveChanges();
+        }
+
+        public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
+        {
+            return _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToList();
         }
     }
 }

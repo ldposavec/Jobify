@@ -7,8 +7,6 @@ using Jobify.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Blazorise;
-using Blazorise.Bootstrap5;
 using Jobify.BL.Interfaces;
 using Jobify.BL.Database;
 using Jobify.BL.Providers;
