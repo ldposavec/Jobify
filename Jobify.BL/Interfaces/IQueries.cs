@@ -9,5 +9,18 @@ namespace Jobify.BL.Interfaces
 {
     public interface IQueries : IJobAppsQueries, IJobAdQueries, IStatusQueries, IJobOfferQueries, IStudentQueries, INotificationQueries, IUserQueries, IEmployerQueries
     {
+        private string ListAllImplementations()
+        {
+            Type iQueriesType = typeof(IQueries);
+            var interfaces = iQueriesType.GetInterfaces();
+
+            string implementations = "";
+            foreach (var i in interfaces)
+            {
+                implementations += i.Name + "\n";
+            }
+
+            return implementations;
+        }
     }
 }

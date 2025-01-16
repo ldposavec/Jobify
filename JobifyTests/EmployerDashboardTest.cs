@@ -18,7 +18,7 @@ namespace JobifyTests
             var employerId = 2;
 
             // Act
-            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(employerId);
+            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerIdAsync(employerId);
             var jobAds = jobAdsTask.ToList();
 
             // Assert
@@ -33,7 +33,7 @@ namespace JobifyTests
             var employerId = 0;
 
             // Act
-            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(employerId);
+            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerIdAsync(employerId);
             var jobAds = jobAdsTask.ToList();
 
             // Assert
@@ -48,7 +48,7 @@ namespace JobifyTests
             var employerId = 4;
 
             // Act
-            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(employerId);
+            var jobAdsTask = await DbQueryProvider.Service.GetAllJobAdsByEmployerIdAsync(employerId);
             var jobAds = jobAdsTask.ToList();
 
             // Assert

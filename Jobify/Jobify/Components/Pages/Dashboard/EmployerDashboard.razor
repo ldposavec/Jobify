@@ -122,12 +122,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadJobAds();
+        LoadJobAds();
     }
 
-    private async Task LoadJobAds()
+    private void LoadJobAds()
     {
-        jobAds = await DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
+        jobAds = DbQueryProvider.Service.GetAllJobAdsByEmployerId(id);
     }
 
     private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
@@ -142,10 +142,17 @@
         var jobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
 
         return jobApps.Count;
+
         // var jobAppsPerAd = jobApps.Where(a => a.JobAdId == jobAdId);
         // return jobAppsPerAd.Count();
         // return selectedJobApps.Count; // maybe will need fixing
     }
+
+    // private async Task<int> GetNumberOfApplications(int jobAdId)
+    // {
+    //     var numberOfApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdIdAsync(jobAdId);
+    //     return numberOfApps.Count;
+    // }
 
     private string TruncateText(string text, int maxLength)
     {
@@ -171,9 +178,9 @@
         selectedStudents.Add(student);
     }
 
-    private async Task OpenManageModal(int jobAdId)
+    private void OpenManageModal(int jobAdId)
     {
-        selectedJobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdIdAsync(jobAdId);
+        selectedJobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
         foreach (var app in selectedJobApps)
         {
             selectedStudents.Clear();
@@ -192,7 +199,7 @@
             }
             await CloseManageModal();
             messages.Add(CreateToastMessage(ToastType.Success, "Applications updated successfully!"));
-            await LoadJobAds();
+            LoadJobAds();
         }
         catch (Exception ex)
         {

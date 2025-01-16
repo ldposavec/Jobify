@@ -4,6 +4,7 @@
 @using Jobify.BL.Enums
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
+@using Jobify.BL.Builders
 
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
 <ConfirmDialog @ref="dialog" />
@@ -201,14 +202,21 @@ else
             return;
         }
 
-        var jobApp = new JobApp()
-            {
-                JobAdId = selectedJob.Id,
-                StudentId = id,
-                CreatedAt = DateTime.Now,
-                CvFilepath = uploadedCvPath,
-                StatusId = (int)StatusEnum.Pending
-            };
+        // var jobApp = new JobApp()
+        //     {
+        //         JobAdId = selectedJob.Id,
+        //         StudentId = id,
+        //         CreatedAt = DateTime.Now,
+        //         CvFilepath = uploadedCvPath,
+        //         StatusId = (int)StatusEnum.Pending
+        //     };
+        var jobApp = new JobAppBuilder.Builder()
+            .WithJobAdId(selectedJob.Id)
+            .WithStudentId(id)
+            .WithCreatedAt(DateTime.Now)
+            .WithCvFilepath(uploadedCvPath)
+            .WithStatusId((int)StatusEnum.Pending)
+            .Build();
 
         DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, id, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
         // await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");

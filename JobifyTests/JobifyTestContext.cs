@@ -21,7 +21,8 @@ namespace JobifyTests
             var queries = new Queries(dbContext);
 
             Services.AddSingleton<JobifyContext>(dbContext);
-            Services.AddSingleton<IQueries>(queries);
+            //Services.AddSingleton<IQueries>(queries);
+            Services.AddSingleton<IQueries>(q => Queries.GetInstance(q.GetRequiredService<JobifyContext>()));
 
             DbQueryProvider.Init(queries);
         }

@@ -12,10 +12,27 @@ namespace Jobify.BL.Database
     public class Queries : IQueries
     {
         private readonly JobifyContext _context;
+        private static Queries? _instance;
+        private static readonly object _lock = new object();
 
         public Queries(JobifyContext context)
         {
             _context = context;
+        }
+
+        public static Queries GetInstance(JobifyContext context)
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new Queries(context);
+                    }
+                }
+            }
+            return _instance;
         }
 
         public void AddNewJobAd(int employerId, string title, string description, decimal salary, DateTime createdAt, int statusId)
@@ -153,7 +170,7 @@ namespace Jobify.BL.Database
                 .ToList();
         }
 
-        public async Task<List<JobAd>> GetAllJobAdsByEmployerId(int employerId)
+        public async Task<List<JobAd>> GetAllJobAdsByEmployerIdAsync(int employerId)
         {
             return await _context.JobAds.Where(ja => ja.EmployerId == employerId).ToListAsync();
         }
@@ -272,6 +289,11 @@ namespace Jobify.BL.Database
         public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
         {
             return _context.JobApps.Where(ja => ja.JobAdId == jobAdId).ToList();
+        }
+
+        public List<JobAd> GetAllJobAdsByEmployerId(int employerId)
+        {
+            return _context.JobAds.Where(ja => ja.EmployerId == employerId).ToList();
         }
     }
 }

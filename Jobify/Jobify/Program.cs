@@ -22,7 +22,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-builder.Services.AddScoped<IQueries, Queries>();
+//builder.Services.AddScoped<IQueries, Queries>();
 
 
 builder.Services.AddHttpClient("Jobify.Api", client =>
@@ -60,6 +60,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddSingleton<IQueries>(q => Queries.GetInstance(q.GetRequiredService<JobifyContext>()));
 
 //builder.Services
 //    .AddBlazorise(options =>
