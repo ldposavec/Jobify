@@ -1,6 +1,7 @@
 ﻿@page "/employer/createjob"
 @rendermode InteractiveServer
 @inject IJSRuntime JSRuntime
+@using Jobify.BL.Decorators
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
 
@@ -13,7 +14,7 @@
 <EditForm Model="newJobAd" OnValidSubmit="HandleValidSubmit" FormName="newJobAd">
     <DataAnnotationsValidator />
     <ValidationSummary />
-@*     <div class="container">
+    @*     <div class="container">
         <div class="row">
         <div class="col">
             <div class="row">
@@ -148,7 +149,11 @@
     {
         if (newJobAd is not null)
         {
-            DbQueryProvider.Service.AddNewJobAd(id, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
+            // DbQueryProvider.Service.AddNewJobAd(id, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
+            var queries = DbQueryProvider.Service;
+            var loggingQueries = new LoggingQueriesDecorator(queries);
+
+            loggingQueries.AddNewJobAd(id, newJobAd.Title, newJobAd.Description, newJobAd.Salary, DateTime.Now, newJobAd.StatusId);
             messages.Add(CreateToastMessage(ToastType.Success, "Job Ad created successfully!"));
             ClearModel();
         }
