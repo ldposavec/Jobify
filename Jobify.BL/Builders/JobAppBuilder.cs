@@ -1,4 +1,5 @@
 ﻿using Jobify.BL.DALModels;
+using Jobify.BL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,31 @@ using System.Threading.Tasks;
 
 namespace Jobify.BL.Builders
 {
-    public class JobAppBuilder : JobApp
+    public class JobAppBuilder : JobApp, IPrototype<JobAppBuilder>
     {
         private JobAppBuilder() { }
+
+        public JobAppBuilder Clone()
+        {
+            return new JobAppBuilder
+            {
+                Id = Id,
+                JobAdId = JobAdId,
+                StudentId = StudentId,
+                CreatedAt = CreatedAt,
+                CvFilepath = CvFilepath,
+                StatusId = StatusId
+            };
+            //var jobApp = new JobAppBuilder.Builder()
+            //    .WithJobAdId(JobAdId)
+            //    .WithStudentId(StudentId)
+            //    .WithCreatedAt(CreatedAt)
+            //    .WithCvFilepath(CvFilepath)
+            //    .WithStatusId(StatusId)
+            //    .Build();
+
+            //return jobApp;
+        }
 
         public override string? ToString()
         {
