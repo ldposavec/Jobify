@@ -62,6 +62,8 @@ else
             var (token, role) = await AccountApiService.LoginAsync(LoginDto);
             IsNavigating = true;
 
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
+
             switch (role)
             {
                 case "Admin":

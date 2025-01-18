@@ -49,8 +49,9 @@ builder.Services.AddScoped<IRepository<UserType>, UserTypeRepository>();
 builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<OIBValidationService>();
-builder.Services.AddSingleton<JwtTokenProvider>();
+
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<IUserTypeAdapter, UserTypeAdapter>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
