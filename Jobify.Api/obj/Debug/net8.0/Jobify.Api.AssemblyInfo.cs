@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Jobify.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e10709a967a93a77c462fc39e79b5bc9ee2654d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e73704ec4748b8028cbca1b1d984e7a2c186b32")]
 [assembly: System.Reflection.AssemblyProductAttribute("Jobify.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Jobify.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
