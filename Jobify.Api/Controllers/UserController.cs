@@ -173,7 +173,7 @@ namespace Jobify.Api.Controllers
                     return Unauthorized(genericLoginFail);
                 }
 
-                var jwtProvider = new JwtTokenProvider(_configuration);
+                var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
                 var token = jwtProvider.GenerateEmailVerificationToken(existingUser.Mail, existingUser.UserType.Name);
 
                 return Ok(new { Token = token, Role = existingUser.UserType.Name });
@@ -223,7 +223,7 @@ namespace Jobify.Api.Controllers
             if (user == null)
                 return BadRequest("User with this email doesn't exist.");
 
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             var resetToken = jwtProvider.GenerateEmailVerificationToken(user.Mail, user.UserType.Name);
 
             var emailService = new EmailService(_configuration);
@@ -234,5 +234,18 @@ namespace Jobify.Api.Controllers
 
             return Ok("Password reset email sent.");
         }
+
+        [HttpGet("[action]")]
+        public ActionResult<int> GetByEmail(string email)
+        {
+            var user = _repository.GetByEmail(email);
+            if (user == null)
+            {
+                return NotFound($"User with email {email} not found.");
+            }
+
+            return Ok(user.Id);
+        }
+
     }
 }

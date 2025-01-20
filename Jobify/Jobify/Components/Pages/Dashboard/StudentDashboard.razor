@@ -166,13 +166,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadJobApps();
+        LoadJobApps();
         LoadAcceptedApplications();
     }
 
     private async Task LoadJobApps() 
     {
-        jobApps = await DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
+        jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
     }
 
     private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage

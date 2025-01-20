@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Jobify;
 
 namespace Jobify.BL.DALModels;
 
-public partial class JobifyContext : DbContext
+public partial class PostgresContext : DbContext
 {
-    public JobifyContext()
+    public PostgresContext()
     {
     }
 
-    public JobifyContext(DbContextOptions<JobifyContext> options)
+    public PostgresContext(DbContextOptions<PostgresContext> options)
         : base(options)
     {
     }
@@ -41,12 +40,12 @@ public partial class JobifyContext : DbContext
     public virtual DbSet<UserType> UserTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //=> optionsBuilder.UseNpgsql("name=ConnectionStrings:AppConnStr");
-        //=> optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Jobify");
-        => optionsBuilder.UseNpgsql("Host=truly-universal-spitz.data-1.use1.tembo.io;Port=5432;Username=postgres;Password=y2csSQsBqEyAi4c6").UseLazyLoadingProxies();
+        => optionsBuilder.UseNpgsql("Host=truly-universal-spitz.data-1.use1.tembo.io;Port=5432;Username=postgres;Password=y2csSQsBqEyAi4c6");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("pg_stat_statements");
+
         modelBuilder.Entity<Admin>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("admin_pkey");
@@ -95,6 +94,10 @@ public partial class JobifyContext : DbContext
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
+            entity.Property(e => e.AverageGrade)
+                .HasDefaultValueSql("0.0")
+                .HasColumnName("average_grade");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.FirmName)
                 .HasMaxLength(200)
                 .HasColumnName("firm_name");
@@ -104,11 +107,7 @@ public partial class JobifyContext : DbContext
             entity.Property(e => e.Oib)
                 .HasMaxLength(11)
                 .HasColumnName("oib");
-            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Picture).HasColumnName("picture");
-            entity.Property(e => e.AverageGrade)
-                .HasDefaultValueSql("0.0")
-                .HasColumnName("average_grade");
         });
 
         modelBuilder.Entity<JobAd>(entity =>
@@ -209,8 +208,8 @@ public partial class JobifyContext : DbContext
                 .HasDefaultValueSql("now()")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.JobAppId).HasColumnName("job_app_id");
+            entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)

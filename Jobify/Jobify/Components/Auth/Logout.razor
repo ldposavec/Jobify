@@ -1,0 +1,43 @@
+﻿@page "/Auth/Logout"
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<h3>@logoutMessage</h3>
+
+@if (!logoutConfirmed)
+{
+    <div>
+        <p>Are you sure you want to log out?</p>
+        <button class="btn btn-danger" @onclick="ConfirmLogout">Yes, Log Out</button>
+        <button class="btn btn-secondary" @onclick="CancelLogout">Cancel</button>
+    </div>
+}
+else
+{
+    <p>Logging you out...</p>
+}
+
+@code {
+    private string logoutMessage = "Logout";
+    private bool logoutConfirmed = false;
+
+    private async Task ConfirmLogout()
+    {
+        logoutConfirmed = true;
+        await Task.Delay(2000);
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "authToken");
+        Navigate("/Auth/Login");
+    }
+
+    private void CancelLogout()
+    {
+        Navigate("/");
+    }
+
+    private void Navigate(string url)
+    {
+        Navigation.NavigateTo(url, forceLoad: false);
+        Navigation.Refresh();
+    }
+}

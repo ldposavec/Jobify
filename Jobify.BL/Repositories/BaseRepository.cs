@@ -15,6 +15,13 @@ namespace Jobify.BL.Repositories
             _context = context;
         }
         protected JobifyContext Context => _context;
+
+        private bool IsEntityAdded(T entity)
+        {
+            var entry = _context.Entry(entity);
+            return entry.State == Microsoft.EntityFrameworkCore.EntityState.Added;
+        }
+
         public T Delete(int id)
         {
             var entity = GetById(id);
@@ -38,7 +45,10 @@ namespace Jobify.BL.Repositories
 
         public void Insert(T entity)
         {
-            _context.Set<T>().Add(entity);
+            if (!IsEntityAdded(entity))
+            {
+                _context.Set<T>().Add(entity);
+            }
         }
 
         public void Save()

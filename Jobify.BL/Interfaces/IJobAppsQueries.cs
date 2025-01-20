@@ -13,7 +13,8 @@ namespace Jobify.BL.Interfaces
         //added
         void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId);
         List<JobApp> GetAllJobApps();
-        Task<List<JobApp>> GetAllJobAppsByStudentId(int studentId);
+        Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId);
+        List<JobApp> GetAllJobAppsByStudentId(int studentId);
         List<JobApp> GetAllJobAppsByEmployerId(int employerId);
         List<JobApp> GetAllJobAppsByJobAdId(int jobAdId);
         Task<List<JobApp>> GetAllJobAppsByJobAdIdAsync(int jobAdId);

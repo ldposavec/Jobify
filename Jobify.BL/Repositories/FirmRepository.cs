@@ -27,7 +27,7 @@ namespace Jobify.BL.Repositories
 
         public Firm? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Firms.FirstOrDefault(p => p.Id == id);
         }
 
         public void Insert(Firm entity)
@@ -42,7 +42,7 @@ namespace Jobify.BL.Repositories
 
         public void Update(Firm entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
         }
     }
 }

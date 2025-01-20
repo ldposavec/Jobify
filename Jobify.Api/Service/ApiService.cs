@@ -11,7 +11,8 @@ namespace Jobify.Api.Service
 
         private readonly Dictionary<Type, string> _baseRoutes = new()
         {
-            { typeof(UserDTO), ApiRoutes.User.Base }
+            { typeof(UserDTO), ApiRoutes.User.Base }, { typeof(FirmDTO), ApiRoutes.Firm.Base },
+            { typeof(FirmSimplifiedDTO), ApiRoutes.Firm.Base }, { typeof(ReviewDTO), ApiRoutes.Review.Base }
         };
         public ApiService(IHttpClientFactory clientFactory)
         {
@@ -78,6 +79,22 @@ namespace Jobify.Api.Service
             var route = $"{GetRouteForType<T>()}/{id}";
             var response = await _client.DeleteAsync(route);
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<List<T>> GetItemsByFirmIdAsync<T>(int firmId)
+        {
+            var route = $"{GetRouteForType<T>()}/firm/{firmId}";
+            var response = await _client.GetAsync(route);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadFromJsonAsync<List<T>>();
+                return data ?? new List<T>();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return new List<T>();
+            }
+            throw new Exception($"Error fetching for patient ID {firmId} from {route}");
         }
     }
 }

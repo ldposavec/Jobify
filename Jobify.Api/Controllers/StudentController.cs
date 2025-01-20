@@ -60,7 +60,7 @@ namespace Jobify.Api.Controllers
             _userRepository.Save();
             _studentRepository.Save();
 
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail, studentUserType.Name);
 
             var emailService = new EmailService(_configuration);
@@ -78,7 +78,7 @@ namespace Jobify.Api.Controllers
         [HttpGet("verify-email")]
         public IActionResult VerifyEmail(string token)
         {
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             var email = jwtProvider.ValidateToken(token);
 
             if (email == null)

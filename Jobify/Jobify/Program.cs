@@ -12,7 +12,6 @@ using Jobify.BL.Database;
 using Jobify.BL.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()

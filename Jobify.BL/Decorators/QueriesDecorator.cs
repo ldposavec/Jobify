@@ -121,6 +121,11 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
+        public Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<JobOffer> GetAllJobOffers()
         {
             throw new NotImplementedException();
@@ -182,6 +187,11 @@ namespace Jobify.BL.Decorators
         }
 
         public void UpdateJobApplication(JobApp jobApp)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<JobApp> IJobAppsQueries.GetAllJobAppsByStudentId(int studentId)
         {
             throw new NotImplementedException();
         }
