@@ -234,5 +234,18 @@ namespace Jobify.Api.Controllers
 
             return Ok("Password reset email sent.");
         }
+
+        [HttpGet("[action]")]
+        public ActionResult<int> GetByEmail(string email)
+        {
+            var user = _repository.GetByEmail(email);
+            if (user == null)
+            {
+                return NotFound($"User with email {email} not found.");
+            }
+
+            return Ok(user.Id);
+        }
+
     }
 }

@@ -15,5 +15,13 @@ public partial class Firm
 
     public string? Industry { get; set; }
 
+    public string? Description { get; set; }
+
+    public byte[]? Picture { get; set; }
+
+    public double? AverageGrade { get; set; }
+
     public virtual ICollection<Employer> Employers { get; set; } = new List<Employer>();
+
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

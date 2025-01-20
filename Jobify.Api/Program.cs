@@ -45,6 +45,7 @@ builder.Services.AddScoped<IRepository<Employer>, EmployerRepository>();
 builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
 builder.Services.AddScoped<IRepository<Firm>, FirmRepository>();
 builder.Services.AddScoped<IRepository<UserType>, UserTypeRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

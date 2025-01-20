@@ -12,7 +12,13 @@ namespace Jobify.Api.Mapping
             CreateMap<UserType, UserTypeDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
 
-            CreateMap<Firm, FirmDTO>().ReverseMap();
+            CreateMap<Firm, FirmDTO>()
+                //.ForMember(dest => dest.AverageGrade, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<Firm, FirmSimplifiedDTO>()
+                //.ForMember(dest => dest.AverageGrade, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<Review, ReviewDTO>().ReverseMap();
             CreateMap<JobAd, JobAdDTO>().ReverseMap();
             CreateMap<Employer, EmployerDTO>().ReverseMap();            
             CreateMap<Employer, EmployerRegistrationDTO>().ReverseMap();            

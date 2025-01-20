@@ -1,12 +1,9 @@
-﻿using AutoMapper.Configuration.Annotations;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Jobify.Api.DTOs
 {
-    public class FirmDTO
+    public class FirmSimplifiedDTO
     {
-        //[JsonIgnore]
         public int Id { get; set; }
 
         [Required]
@@ -24,11 +21,6 @@ namespace Jobify.Api.DTOs
 
         [StringLength(100)]
         public string? Industry { get; set; }
-
-        [StringLength(500)]
-        public string? Description { get; set; }
-
-        public string? PictureBase64 { get; set; }
 
         public double? AverageGrade { get; set; }
     }

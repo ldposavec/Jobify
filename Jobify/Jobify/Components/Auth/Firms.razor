@@ -1,0 +1,97 @@
+﻿@page "/Firms"
+@using System.ComponentModel.DataAnnotations
+@using Jobify.Api.DTOs
+@using Jobify.Api.Service
+@inject IApiService ApiService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>Firms</PageTitle>
+
+@if (IsNavigating)
+{
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <h3>Firms</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Oib</th>
+                <th>Address</th>
+                <th>Industry</th>
+                <th class="text-center">Average Grade</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var firm in firms)
+            {
+                <tr>
+                    <td>@firm.Id</td>
+                    <td>@firm.FirmName</td>
+                    <td>@firm.Oib</td>
+                    <td>@firm.Address</td>
+                    <td>@firm.Industry</td>
+                    <td class="text-center">
+                        <span class="badge @(GetBadgeColor(firm.AverageGrade.Value)) fs-6">
+                            @firm.AverageGrade.Value.ToString("0.0")
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary" @onclick="() => ViewFirm(firm.Id)">View</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<FirmSimplifiedDTO> firms = new List<FirmSimplifiedDTO>();
+    private bool IsNavigating { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            firms = await ApiService.GetAllAsync<FirmSimplifiedDTO>();
+            firms = firms.OrderBy(p => p.Id).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading firms: {ex.Message}");
+        }
+        finally
+        {
+            IsNavigating = false;
+        }
+    }
+
+    private void ViewFirm(int firmId)
+    {
+        NavigateToUrl($"/Firms/View/{firmId}");
+    } 
+
+    private void NavigateToUrl(string url)
+    {
+        IsNavigating = true;
+        Navigation.NavigateTo(url, forceLoad: false);
+        Navigation.Refresh();
+    }
+
+    private string GetBadgeColor(double grade)
+    {
+        if (grade >= 4.0) return "bg-success";
+        if (grade >= 2.5) return "bg-warning";
+        return "bg-danger";
+    }
+}

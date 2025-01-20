@@ -55,5 +55,19 @@ namespace Jobify.Api.Service
             var response = await _client.PostAsync(requestUri, null);
             return response;
         }
+
+        public async Task<int> GetUserIdByEmailAsync(string email)
+        {
+            var requestUri = $"{ApiRoutes.User.UserByMail}?email={Uri.EscapeDataString(email)}";
+            var response = await _client.GetAsync(requestUri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var userId = await response.Content.ReadAsStringAsync();
+                return int.Parse(userId);
+            }
+            throw new Exception($"Unable to retrieve user ID for email {email}.");
+        }
+
     }
 }

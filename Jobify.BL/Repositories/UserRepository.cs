@@ -12,5 +12,9 @@ namespace Jobify.BL.Repositories
     {
         public UserRepository(JobifyContext context) : base(context) { }
 
+        public User? GetByEmail(string email)
+        {
+            return Context.Users.FirstOrDefault(u => u.Mail == email);
+        }
     }
 }
