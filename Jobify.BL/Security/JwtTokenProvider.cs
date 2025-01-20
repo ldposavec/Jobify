@@ -60,6 +60,7 @@ namespace Jobify.BL.Security
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
@@ -73,6 +74,5 @@ namespace Jobify.BL.Security
                 throw new SecurityTokenException(e.Message);
             }
         }
-
     }
 }

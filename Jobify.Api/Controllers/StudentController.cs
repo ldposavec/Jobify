@@ -16,7 +16,7 @@ namespace Jobify.Api.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IRepository<Student> _studentRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -25,7 +25,7 @@ namespace Jobify.Api.Controllers
 
         public StudentController(IRepositoryFactory repositoryFactory, IPasswordHasher<User> passwordHasher, IMapper mapper, IConfiguration configuration)
         {
-            _userRepository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _userRepository = repositoryFactory.GetRepository<UserRepository>(); ;
             _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
             _studentRepository = repositoryFactory.GetRepository<IRepository<Student>>();
             _passwordHasher = passwordHasher;

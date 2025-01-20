@@ -10,7 +10,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Jobify.BL\Jobify.BL.csproj" />
     <ProjectReference Include="..\..\Jobify.Api\Jobify.Api.csproj" />
-    <ProjectReference Include="..\Jobify.Client\Jobify.Client.csproj" />
     <PackageReference Include="Blazor.Bootstrap" Version="3.2.0" />
     <PackageReference Include="bunit" Version="1.37.7" />
     <PackageReference Include="MailKit" Version="4.9.0" />
@@ -28,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\uploads\cv\" />
   </ItemGroup>
 

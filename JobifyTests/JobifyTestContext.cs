@@ -3,6 +3,7 @@ using Jobify.BL.DALModels;
 using Jobify.BL.Database;
 using Jobify.BL.Interfaces;
 using Jobify.BL.Providers;
+using Jobify.BL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Transactions;
@@ -42,6 +43,7 @@ namespace JobifyTests
 
             // Register Queries with Scoped Lifetime
             Services.AddScoped<IQueries, Queries>();
+            Services.AddScoped<IReviewRepository, ReviewRepository>();
 
             // Ensure DbQueryProvider is initialized correctly within the scope
             var serviceProvider = Services.BuildServiceProvider();
@@ -55,5 +57,4 @@ namespace JobifyTests
             dbContext.Database.EnsureCreated();
         }
     }
-
 }

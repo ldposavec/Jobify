@@ -15,7 +15,7 @@ namespace Jobify.Api.Controllers
     [ApiController]
     public class EmployerController : ControllerBase
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IRepository<Employer> _employerRepository;
         private readonly IRepository<Firm> _firmRepository;
@@ -25,7 +25,7 @@ namespace Jobify.Api.Controllers
         private readonly IConfiguration _configuration;
         public EmployerController(IRepositoryFactory repositoryFactory, OIBValidationService oibValidationService,   IPasswordHasher<User> passwordHasher, IMapper mapper, IConfiguration configuration)
         {
-            _userRepository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _userRepository = repositoryFactory.GetRepository<UserRepository>(); ;
             _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
             _employerRepository = repositoryFactory.GetRepository<IRepository<Employer>>();
             _firmRepository = repositoryFactory.GetRepository<IRepository<Firm>>();
