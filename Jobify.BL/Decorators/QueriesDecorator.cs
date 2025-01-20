@@ -51,6 +51,11 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
+        public Task DeleteJobAdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteJobApp(int id)
         {
             throw new NotImplementedException();
@@ -71,12 +76,12 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public List<Employer> GetAllEmployersByJobAddId(int jobAddId)
+        public List<JobAd> GetAllJobAds()
         {
             throw new NotImplementedException();
         }
 
-        public List<JobAd> GetAllJobAds()
+        public Task<List<JobAd>> GetAllJobAdsAsync()
         {
             throw new NotImplementedException();
         }

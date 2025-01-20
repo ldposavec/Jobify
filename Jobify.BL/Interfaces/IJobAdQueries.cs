@@ -11,10 +11,12 @@ namespace Jobify.BL.Interfaces
     {
         void AddNewJobAd(int employerId, string title, string description, decimal salary, DateTime createdAt, int statusId);
         List<JobAd> GetAllJobAds();
+        Task<List<JobAd>> GetAllJobAdsAsync();
         Task<List<JobAd>> GetAllJobAdsByEmployerIdAsync(int employerId);
         List<JobAd> GetAllJobAdsByEmployerId(int employerId);
         JobAd GetJobAdById(int id);
         void UpdateJobAd(JobAd jobAd);
         void DeleteJobAd(int id);
+        Task DeleteJobAdAsync(int id);
     }
 }

@@ -158,10 +158,6 @@ namespace Jobify.BL.Database
             _context.SaveChanges();
         }
 
-        public List<Employer> GetAllEmployersByJobAddId(int jobAddId)
-        {
-            return _context.Employers.Where(e => e.JobAds.Any(ja => ja.Id == jobAddId)).ToList();
-        }
         //modified
         public List<JobAd> GetAllJobAds()
         {
@@ -294,6 +290,18 @@ namespace Jobify.BL.Database
         public List<JobAd> GetAllJobAdsByEmployerId(int employerId)
         {
             return _context.JobAds.Where(ja => ja.EmployerId == employerId).ToList();
+        }
+
+        public Task<List<JobAd>> GetAllJobAdsAsync()
+        {
+            return _context.JobAds.ToListAsync();
+        }
+
+        public async Task DeleteJobAdAsync(int id)
+        {
+            var jobAd = await _context.JobAds.FindAsync(id);
+            _context.JobAds.Remove(jobAd);
+            await _context.SaveChangesAsync();
         }
     }
 }
