@@ -17,7 +17,16 @@ namespace Jobify.BL.Repositories
 
         public Firm Delete(int id)
         {
-            throw new NotImplementedException();
+            var firm = GetById(id);
+            if (firm == null)
+            {
+                throw new Exception($"Firm with id {id} not found.");
+            }
+
+            _context.Firms.Remove(firm);
+            Save();
+
+            return firm;
         }
 
         public IEnumerable<Firm> GetAll()

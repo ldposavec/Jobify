@@ -1,4 +1,5 @@
 using Bunit;
+using Jobify.Api.Mapping;
 using Jobify.BL.DALModels;
 using Jobify.BL.Database;
 using Jobify.BL.Interfaces;
@@ -44,6 +45,15 @@ namespace JobifyTests
             // Register Queries with Scoped Lifetime
             Services.AddScoped<IQueries, Queries>();
             Services.AddScoped<IReviewRepository, ReviewRepository>();
+            Services.AddScoped<IRepository<UserType>, UserTypeRepository>();
+            Services.AddScoped<IRepository<Firm>, FirmRepository>();
+            Services.AddScoped<UserRepository>();
+            Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+
+            Services.AddAutoMapper(config =>
+            {
+                config.AddProfile<MappingProfile>(); 
+            });
 
             // Ensure DbQueryProvider is initialized correctly within the scope
             var serviceProvider = Services.BuildServiceProvider();

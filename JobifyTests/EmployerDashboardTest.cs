@@ -62,7 +62,7 @@ namespace JobifyTests
 
             var queries = scope.ServiceProvider.GetRequiredService<IQueries>();
             // Arrange
-            var employerId = 4;
+            var employerId = 8;
 
             // Act
             var jobAdsTask = await queries.GetAllJobAdsByEmployerIdAsync(employerId);

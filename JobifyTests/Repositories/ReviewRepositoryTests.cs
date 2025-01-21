@@ -130,7 +130,7 @@ namespace JobifyTests.Repositories
         {
             // Arrange
             var dbContext = Services.GetRequiredService<JobifyContext>();
-            var r1 = new Review { FirmId = 11, UserId = 6, Grade = 5, Comment = "Firm Review 1" };
+            var r1 = new Review { FirmId = 11, UserId = 9, Grade = 5, Comment = "Firm Review 1" };
             var r2 = new Review { FirmId = 11, UserId = 7, Grade = 4, Comment = "Firm Review 2" };
             dbContext.Reviews.Add(r1);
             dbContext.Reviews.Add(r2);
