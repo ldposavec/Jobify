@@ -139,7 +139,8 @@
 
     private int GetNumberOfApplications(int jobAdId)
     {
-        var jobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        // var jobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        var jobApps = DbQueryProvider.Service.GetAllJobApps().Where(j => j.JobAdId == jobAdId).ToList();
 
         return jobApps.Count;
 
@@ -180,7 +181,8 @@
 
     private void OpenManageModal(int jobAdId)
     {
-        selectedJobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        // selectedJobApps = DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        selectedJobApps = DbQueryProvider.Service.GetAllJobApps().Where(j => j.JobAdId == jobAdId).ToList();
         foreach (var app in selectedJobApps)
         {
             selectedStudents.Clear();

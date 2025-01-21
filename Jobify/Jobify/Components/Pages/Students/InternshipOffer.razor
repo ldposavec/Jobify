@@ -227,7 +227,7 @@ else
         SelectedJob.Status = DbQueryProvider.Service.GetAllStatuses().First(status => status.Id == 3);
         DbQueryProvider.Service.UpdateJobAd(SelectedJob);
 
-        DbQueryProvider.Service.AddNewJobApplication(SelectedJob.Id, 2, DateTime.Now, filePath, SelectedJob.Status.Id);
+        DbQueryProvider.Service.AddNewJobApp(SelectedJob.Id, 2, DateTime.Now, filePath, SelectedJob.Status.Id);
 
         UploadedFileName = null;
         ShowModal = false;
@@ -239,7 +239,8 @@ else
 
     private void EditJobApplication(JobAd job)
     {
-        SelectedJobApp = DbQueryProvider.Service.GetJobApp(job.Id);
+        // SelectedJobApp = DbQueryProvider.Service.GetJobApp(job.Id);
+        SelectedJobApp = DbQueryProvider.Service.GetAllJobApps().Find(x => x.JobAdId == job.Id);
         ShowEditModal = true;
     }
 
@@ -252,7 +253,7 @@ else
                 SelectedJobApp.CvFilepath = filePath;
             }
 
-            DbQueryProvider.Service.UpdateJobApplication(SelectedJobApp);
+            DbQueryProvider.Service.UpdateJobApp(SelectedJobApp);
             JSRuntime.InvokeVoidAsync("alert", "Changes saved successfully!");
         }
 
@@ -273,8 +274,8 @@ else
             if (File.Exists(SelectedJobApp.CvFilepath)) File.Delete(SelectedJobApp.CvFilepath);
 
             SelectedJobApp.StatusId = 4;
-            DbQueryProvider.Service.UpdateJobApplication(SelectedJobApp);
-            DbQueryProvider.Service.DeleteJobApplication(SelectedJobApp.Id);
+            DbQueryProvider.Service.UpdateJobApp(SelectedJobApp);
+            DbQueryProvider.Service.DeleteJobApp(SelectedJobApp.Id);
 
             SelectedJobApp.JobAd.Status = DbQueryProvider.Service.GetAllStatuses().First(status => status.Id == 4);
             DbQueryProvider.Service.UpdateJobAd(SelectedJobApp.JobAd);

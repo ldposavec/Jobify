@@ -26,10 +26,10 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId)
-        {
-            throw new NotImplementedException();
-        }
+        //public void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void AddNewJobOffer(int jobAppId, DateTime date, int statusId)
         {
@@ -61,20 +61,25 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public void DeleteJobApplication(int jobAppId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task DeleteJobAppAsync(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void DeleteJobOffer(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public void DeleteJobApplication(int jobAppId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void DeleteStatus(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public void DeleteJobOffer(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void DeleteStatus(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<JobAd> GetAllJobAds()
         {
@@ -101,15 +106,15 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public List<JobApp> GetAllJobAppsByEmployerId(int employerId)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<JobApp> GetAllJobAppsByEmployerId(int employerId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<JobApp> GetAllJobAppsByJobAdId(int jobAdId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Task<List<JobApp>> GetAllJobAppsByJobAdIdAsync(int jobAdId)
         {
@@ -121,20 +126,25 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<JobOffer> GetAllJobOffers()
         {
             throw new NotImplementedException();
         }
 
-        public List<JobOffer> GetAllJobOffersByStudentId(int studentId)
+        public List<Notification> GetAllNotifications()
         {
             throw new NotImplementedException();
         }
+
+        //public List<JobOffer> GetAllJobOffersByStudentId(int studentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<Status> GetAllStatuses()
         {
@@ -151,20 +161,20 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public JobApp GetJobApp(int jobAdId)
-        {
-            throw new NotImplementedException();
-        }
+        //public JobApp GetJobApp(int jobAdId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public JobApp GetJobAppById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public JobOffer GetJobOfferByJobAppId(int jobAppId)
-        {
-            throw new NotImplementedException();
-        }
+        //public JobOffer GetJobOfferByJobAppId(int jobAppId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Status GetStatusById(int id)
         {
@@ -186,14 +196,14 @@ namespace Jobify.BL.Decorators
             throw new NotImplementedException();
         }
 
-        public void UpdateJobApplication(JobApp jobApp)
-        {
-            throw new NotImplementedException();
-        }
+        //public void UpdateJobApplication(JobApp jobApp)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        List<JobApp> IJobAppsQueries.GetAllJobAppsByStudentId(int studentId)
-        {
-            throw new NotImplementedException();
-        }
+        //List<JobApp> IJobAppsQueries.GetAllJobAppsByStudentId(int studentId)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
