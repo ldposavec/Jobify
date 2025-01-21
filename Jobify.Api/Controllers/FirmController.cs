@@ -52,25 +52,25 @@ namespace Jobify.Api.Controllers
             return Ok(dto);
         }
 
-        [HttpPost("{id}/upload-picture")]
-        public IActionResult UploadPicture(int id, IFormFile image)
-        {
-            var firm = _repository.GetById(id);
-            if (firm == null)
-            {
-                return NotFound($"Firm with ID {id} not found.");
-            }
+        //[HttpPost("{id}/upload-picture")]
+        //public IActionResult UploadPicture(int id, IFormFile image)
+        //{
+        //    var firm = _repository.GetById(id);
+        //    if (firm == null)
+        //    {
+        //        return NotFound($"Firm with ID {id} not found.");
+        //    }
 
-            using (var memoryStream = new MemoryStream())
-            {
-                image.CopyTo(memoryStream);
-                firm.Picture = memoryStream.ToArray(); 
-            }
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        image.CopyTo(memoryStream);
+        //        firm.Picture = memoryStream.ToArray(); 
+        //    }
 
-            _repository.Update(firm);
-            _repository.Save();
+        //    _repository.Update(firm);
+        //    _repository.Save();
 
-            return Ok("Image uploaded successfully.");
-        }
+        //    return Ok("Image uploaded successfully.");
+        //}
     }
 }

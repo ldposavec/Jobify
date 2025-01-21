@@ -17,7 +17,16 @@ namespace Jobify.BL.Repositories
 
         public UserType Delete(int id)
         {
-            throw new NotImplementedException();
+            var userType = GetById(id);
+            if (userType == null)
+            {
+                throw new Exception($"User type with id {id} not found.");
+            }
+
+            _context.UserTypes.Remove(userType);
+            Save();
+
+            return userType;
         }
 
         public IEnumerable<UserType> GetAll()
@@ -42,7 +51,7 @@ namespace Jobify.BL.Repositories
 
         public void Update(UserType entity)
         {
-            throw new NotImplementedException();
+            _context.UserTypes.Update(entity);
         }
     }
 }
