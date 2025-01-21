@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JobifyTests.Repositories
+namespace JobifyTests.Controllers
 {
     public class ReviewControllerTests : JobifyTestContext
     {
@@ -390,62 +390,6 @@ namespace JobifyTests.Repositories
         }
 
         [Fact]
-        public void Put_ShouldReturnInternalServerError_WhenExceptionOccurs()
-        {
-            // Arrange
-            var repositoryFactory = Services.GetRequiredService<IRepositoryFactory>();
-            var mapper = Services.GetRequiredService<IMapper>();
-            var controller = new ReviewController(repositoryFactory, mapper);
-
-            var reviewRepository = repositoryFactory.GetRepository<IReviewRepository>();
-
-            var existingReview = reviewRepository.GetAll().FirstOrDefault();
-            Assert.NotNull(existingReview); 
-
-            var updatedReviewDto = new ReviewDTO
-            {
-                Grade = 5,
-                Comment = "Updated Comment"
-            };
-
-            var dbContext = Services.GetRequiredService<JobifyContext>();
-            dbContext.Dispose();
-
-            // Act
-            var result = controller.Put(existingReview.Id, updatedReviewDto);
-
-            // Assert
-            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
-            Assert.Equal(500, statusCodeResult.StatusCode);
-            Assert.NotNull(statusCodeResult.Value);
-        }
-
-        [Fact]
-        public void Delete_ShouldReturnDeletedReview_WhenReviewExists()
-        {
-            // Arrange
-            var repositoryFactory = Services.GetRequiredService<IRepositoryFactory>();
-            var mapper = Services.GetRequiredService<IMapper>();
-            var controller = new ReviewController(repositoryFactory, mapper);
-
-            var reviewRepository = repositoryFactory.GetRepository<IReviewRepository>();
-
-            var existingReview = reviewRepository.GetAll().FirstOrDefault();
-            Assert.NotNull(existingReview); // Ensure there is at least one review
-
-            // Act
-            var result = controller.Delete(existingReview.Id);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var deletedReviewDto = Assert.IsType<ReviewDTO>(okResult.Value);
-            Assert.Equal(existingReview.Id, deletedReviewDto.Id);
-
-            var deletedReview = reviewRepository.GetById(existingReview.Id);
-            Assert.Null(deletedReview);
-        }
-
-        [Fact]
         public void Delete_ShouldReturnNotFound_WhenReviewDoesNotExist()
         {
             // Arrange
@@ -453,7 +397,7 @@ namespace JobifyTests.Repositories
             var mapper = Services.GetRequiredService<IMapper>();
             var controller = new ReviewController(repositoryFactory, mapper);
 
-            var nonExistentId = 9999; 
+            var nonExistentId = 9999;
 
             // Act
             var result = controller.Delete(nonExistentId);

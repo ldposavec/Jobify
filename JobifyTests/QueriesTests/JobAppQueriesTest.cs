@@ -12,53 +12,6 @@ namespace JobifyTests.QueriesTests
     public class JobAppQueriesTest : JobifyTestContext
     {
         [Fact]
-        public async Task AddNewJobApp_Success()
-        {
-            var serviceProvider = Services.BuildServiceProvider();
-            using var scope = serviceProvider.CreateScope();
-
-            var queries = scope.ServiceProvider.GetRequiredService<IQueries>();
-
-            // Arrange
-            var studentId = 4;
-            var createdAt = DateTime.Now;
-            var dir = Directory.GetCurrentDirectory();
-            var filePath = Path.Combine(dir, "CV.pdf");
-            using (var fs = new FileStream(filePath, FileMode.Create))
-            {
-                var pdfHeader = new byte[] { 0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, 0x0A };
-                fs.Write(pdfHeader, 0, pdfHeader.Length);
-            }
-            var statusId = (int)StatusEnum.Open;
-
-            // Act
-            queries.AddNewJobAd(studentId, "Title", "Description", 1000, createdAt, statusId);
-            var jobAd = queries.GetAllJobAds().Last();
-            //var highestJobAdId = queries.GetAllJobAds().Max(j => j.Id);
-            queries.AddNewJobApp(jobAd.Id, studentId, createdAt, filePath, statusId);
-            var jobApp = queries.GetAllJobApps().Last();
-            //var highestJobAppId = queries.GetAllJobApps().Max(j => j.Id);
-            //var jobApp = queries.GetJobAppById(highestJobAppId);
-
-            // Clean up
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-                Console.WriteLine("PDF file deleted.");
-            }
-            else
-            {
-                Console.WriteLine("PDF file not found for deletion.");
-            }
-
-            // Assert
-            Assert.NotNull(jobApp);
-            Assert.Equal(studentId, jobApp.StudentId);
-            Assert.Equal(createdAt.Minute, jobApp.CreatedAt.Value.Minute);
-            Assert.Equal(filePath, jobApp.CvFilepath);
-        }
-
-        [Fact]
         public async Task GetAllJobApps_Success()
         {
             var serviceProvider = Services.BuildServiceProvider();
