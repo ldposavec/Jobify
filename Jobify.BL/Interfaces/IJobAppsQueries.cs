@@ -11,22 +11,23 @@ namespace Jobify.BL.Interfaces
     {
         void AddNewJobApp(int jobAdId, int studentId, DateTime createdAt, string cvFilepath, int statusId);
         //added
-        void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId);
+        //void AddNewJobApplication(int jobAdId, int studentId, DateTime createdAt, string cvFilePath, int statusId);
         List<JobApp> GetAllJobApps();
-        Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId);
-        List<JobApp> GetAllJobAppsByStudentId(int studentId);
-        List<JobApp> GetAllJobAppsByEmployerId(int employerId);
-        List<JobApp> GetAllJobAppsByJobAdId(int jobAdId);
+        //Task<List<JobApp>> GetAllJobAppsByStudentIdAsync(int studentId);
+        //List<JobApp> GetAllJobAppsByStudentId(int studentId);
+        //List<JobApp> GetAllJobAppsByEmployerId(int employerId);
+        //List<JobApp> GetAllJobAppsByJobAdId(int jobAdId);
         Task<List<JobApp>> GetAllJobAppsByJobAdIdAsync(int jobAdId);
         JobApp GetJobAppById(int id);
         //added
-        JobApp GetJobApp(int jobAdId);
-        JobOffer GetJobOfferByJobAppId(int jobAppId);
+        //JobApp GetJobApp(int jobAdId);
+        //JobOffer GetJobOfferByJobAppId(int jobAppId);
         void UpdateJobApp(JobApp jobApp);
         //added
-        void UpdateJobApplication(JobApp jobApp);
+        //void UpdateJobApplication(JobApp jobApp);
         void DeleteJobApp(int id);
+        //Task DeleteJobAppAsync(int id);
         //added
-        void DeleteJobApplication(int jobAppId);
+        //void DeleteJobApplication(int jobAppId);
     }
 }

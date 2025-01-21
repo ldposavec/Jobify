@@ -11,7 +11,7 @@ namespace Jobify.BL.Interfaces
     {
         void AddNewJobOffer(int jobAppId, DateTime date, int statusId);
         List<JobOffer> GetAllJobOffers();
-        List<JobOffer> GetAllJobOffersByStudentId(int studentId);
-        void DeleteJobOffer(int id);
+        //List<JobOffer> GetAllJobOffersByStudentId(int studentId);
+        //void DeleteJobOffer(int id);
     }
 }
