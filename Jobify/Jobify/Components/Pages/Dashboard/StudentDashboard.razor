@@ -166,13 +166,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadJobApps();
+        LoadJobApps();
         LoadAcceptedApplications();
     }
 
     private async Task LoadJobApps() 
     {
-        jobApps = await DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
+        // jobApps = DbQueryProvider.Service.GetAllJobAppsByStudentId(id);
+        jobApps = DbQueryProvider.Service.GetAllJobApps().Where(x => x.StudentId == id).ToList();
     }
 
     private ToastMessage CreateToastMessage(ToastType toastType, string message, string title = null) => new ToastMessage
@@ -195,9 +196,9 @@
 
             SelectedJobApp = job;
             SelectedJobApp.StatusId = 4;
-            DbQueryProvider.Service.UpdateJobApplication(SelectedJobApp);
+            DbQueryProvider.Service.UpdateJobApp(SelectedJobApp);
 
-            DbQueryProvider.Service.DeleteJobApplication(job.Id);
+            DbQueryProvider.Service.DeleteJobApp(job.Id);
 
             SelectedJob = job.JobAd;
             SelectedJob.StatusId = job.StatusId;

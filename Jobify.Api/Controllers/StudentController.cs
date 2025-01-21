@@ -16,7 +16,7 @@ namespace Jobify.Api.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IRepository<Student> _studentRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -25,7 +25,7 @@ namespace Jobify.Api.Controllers
 
         public StudentController(IRepositoryFactory repositoryFactory, IPasswordHasher<User> passwordHasher, IMapper mapper, IConfiguration configuration)
         {
-            _userRepository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _userRepository = repositoryFactory.GetRepository<UserRepository>(); ;
             _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
             _studentRepository = repositoryFactory.GetRepository<IRepository<Student>>();
             _passwordHasher = passwordHasher;
@@ -60,7 +60,7 @@ namespace Jobify.Api.Controllers
             _userRepository.Save();
             _studentRepository.Save();
 
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail, studentUserType.Name);
 
             var emailService = new EmailService(_configuration);
@@ -78,7 +78,7 @@ namespace Jobify.Api.Controllers
         [HttpGet("verify-email")]
         public IActionResult VerifyEmail(string token)
         {
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             var email = jwtProvider.ValidateToken(token);
 
             if (email == null)

@@ -1,0 +1,127 @@
+﻿@page "/Reviews/Create/{firmId:int}"
+@using System.ComponentModel.DataAnnotations
+@using Jobify.Api.DTOs
+@using Jobify.Api.Service
+@inject IApiService ApiService
+@inject IAccountApiService AccountApiService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<PageTitle>Add Review</PageTitle>
+<div class="container mt-4">
+    @if (firm == null)
+    {
+        <div class="text-center mt-5">
+            <p class="text-muted">Loading firm details...</p>
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5>Add Review for @firm.FirmName:</h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@newReview" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="container-fluid" style="max-width: 400px;">
+                        <div class="mb-3">
+                            <label for="Grade" class="form-label">Grade</label>
+                            <InputNumber id="Grade" class="form-control" @bind-Value="newReview.Grade" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Comment" class="form-label">Comment</label>
+                            <InputTextArea id="Comment" class="form-control" @bind-Value="newReview.Comment" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="NavigateBack">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int firmId { get; set; }
+    private ReviewDTO newReview = new ReviewDTO();
+    private FirmSimplifiedDTO firm = new FirmSimplifiedDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        firm = await ApiService.GetByIdAsync<FirmSimplifiedDTO>(firmId);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
+            if (!string.IsNullOrEmpty(token))
+            {
+                var email = ExtractEmailFromToken(token);
+                var userId = await AccountApiService.GetUserIdByEmailAsync(email);
+
+                if (userId > 0)
+                {
+                    newReview.FirmId = firmId;
+                    newReview.UserId = userId;
+
+                    var result = await ApiService.CreateAsync<ReviewDTO>(newReview);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        NavigateBack();
+                    }
+                }
+            }
+            else
+            {
+                Navigation.NavigateTo("/Auth/Login");
+                Navigation.Refresh();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An exception occurred while adding the review: {ex.Message}");
+        }
+    }
+
+    private string ExtractEmailFromToken(string token)
+    {
+        try
+        {
+            var payload = token.Split('.')[1];
+            switch (payload.Length % 4)
+            {
+                case 2: payload += "=="; break;
+                case 3: payload += "="; break;
+            }
+
+            var decodedPayloadJson = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+            var decodedPayload = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(decodedPayloadJson);
+            return decodedPayload != null && decodedPayload.TryGetValue("email", out var email)
+                ? email.ToString() ?? string.Empty
+                : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error decoding token: {ex.Message}");
+            return string.Empty;
+        }
+    }
+
+
+    private void NavigateBack()
+    {
+        Navigation.NavigateTo($"/Firms/View/{firmId}", forceLoad: false);
+        Navigation.Refresh();
+    }
+}

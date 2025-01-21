@@ -129,7 +129,7 @@
 
     private async Task SendNotifications(int jobAdId)
     {
-        var jobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdId(jobAdId);
+        var jobApps = await DbQueryProvider.Service.GetAllJobAppsByJobAdIdAsync(jobAdId);
         if(jobApps is null || jobApps.Count == 0)
         {
             Console.WriteLine("No Job Applications!");

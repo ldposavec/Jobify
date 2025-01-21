@@ -17,7 +17,16 @@ namespace Jobify.BL.Repositories
         }
         public Student Delete(int id)
         {
-            throw new NotImplementedException();
+            var student = GetById(id);
+            if (student == null)
+            {
+                throw new Exception($"Student with id {id} not found.");
+            }
+
+            _context.Students.Remove(student);
+            Save();
+
+            return student;
         }
 
         public IEnumerable<Student> GetAll()
@@ -27,7 +36,7 @@ namespace Jobify.BL.Repositories
 
         public Student? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Students.FirstOrDefault(p => p.Id == id);
         }
 
         public void Insert(Student entity)
@@ -42,7 +51,7 @@ namespace Jobify.BL.Repositories
 
         public void Update(Student entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
         }
     }
 }

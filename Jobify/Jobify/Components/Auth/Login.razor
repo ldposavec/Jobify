@@ -62,22 +62,25 @@ else
             var (token, role) = await AccountApiService.LoginAsync(LoginDto);
             IsNavigating = true;
 
-            switch (role)
-            {
-                case "Admin":
-                    Navigation.NavigateTo("/Auth/Users");
-                    break;
-                case "Student":
-                    Navigation.NavigateTo("/students/dashboard");
-                    break;
-                case "Employer":
-                    Navigation.NavigateTo("/employers/dashboard");
-                    break;
-                default:
-                    LoginError = "Invalid user role.";
-                    IsNavigating = false;
-                    return;
-            }
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
+
+            // switch (role)
+            // {
+            //     case "Admin":
+            //         Navigation.NavigateTo("/Auth/Users");
+            //         break;
+            //     case "Student":
+            //         Navigation.NavigateTo("/students/dashboard");
+            //         break;
+            //     case "Employer":
+            //         Navigation.NavigateTo("/employers/dashboard");
+            //         break;
+            //     default:
+            //         LoginError = "Invalid user role.";
+            //         IsNavigating = false;
+            //         return;
+            // }
+            Navigation.NavigateTo("/Firms");
             Navigation.Refresh();
         }
         catch 

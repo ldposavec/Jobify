@@ -17,7 +17,16 @@ namespace Jobify.BL.Repositories
 
         public Firm Delete(int id)
         {
-            throw new NotImplementedException();
+            var firm = GetById(id);
+            if (firm == null)
+            {
+                throw new Exception($"Firm with id {id} not found.");
+            }
+
+            _context.Firms.Remove(firm);
+            Save();
+
+            return firm;
         }
 
         public IEnumerable<Firm> GetAll()
@@ -27,7 +36,7 @@ namespace Jobify.BL.Repositories
 
         public Firm? GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Firms.FirstOrDefault(p => p.Id == id);
         }
 
         public void Insert(Firm entity)
@@ -42,7 +51,7 @@ namespace Jobify.BL.Repositories
 
         public void Update(Firm entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
         }
     }
 }

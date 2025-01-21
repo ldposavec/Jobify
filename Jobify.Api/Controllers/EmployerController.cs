@@ -15,7 +15,7 @@ namespace Jobify.Api.Controllers
     [ApiController]
     public class EmployerController : ControllerBase
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IRepository<UserType> _userTypeRepository;
         private readonly IRepository<Employer> _employerRepository;
         private readonly IRepository<Firm> _firmRepository;
@@ -25,7 +25,7 @@ namespace Jobify.Api.Controllers
         private readonly IConfiguration _configuration;
         public EmployerController(IRepositoryFactory repositoryFactory, OIBValidationService oibValidationService,   IPasswordHasher<User> passwordHasher, IMapper mapper, IConfiguration configuration)
         {
-            _userRepository = repositoryFactory.GetRepository<IRepository<User>>(); ;
+            _userRepository = repositoryFactory.GetRepository<UserRepository>(); ;
             _userTypeRepository = repositoryFactory.GetRepository<IRepository<UserType>>();
             _employerRepository = repositoryFactory.GetRepository<IRepository<Employer>>();
             _firmRepository = repositoryFactory.GetRepository<IRepository<Firm>>();
@@ -110,7 +110,7 @@ namespace Jobify.Api.Controllers
             _userRepository.Save();
             _employerRepository.Save();
 
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             string verificationToken = jwtProvider.GenerateEmailVerificationToken(registerDto.User.Mail, employerUserType.Name);
 
             var emailService = new EmailService(_configuration);
@@ -128,7 +128,7 @@ namespace Jobify.Api.Controllers
         [HttpGet("verify-email")]
         public IActionResult VerifyEmail(string token)
         {
-            var jwtProvider = new JwtTokenProvider(_configuration);
+            var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
             var email = jwtProvider.ValidateToken(token);
 
             if (email == null)
@@ -149,26 +149,25 @@ namespace Jobify.Api.Controllers
             return Ok("Email verified successfully.");
         }
 
-        [HttpPost("generate-jwt")]
-        public IActionResult GenerateTestJwt([FromBody] string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return BadRequest("Email is required.");
-            }
+        //[HttpPost("generate-jwt")]
+        //public IActionResult GenerateTestJwt([FromBody] string email)
+        //{
+        //    if (string.IsNullOrWhiteSpace(email))
+        //    {
+        //        return BadRequest("Email is required.");
+        //    }
 
-            try
-            {
-                var jwtProvider = new JwtTokenProvider(_configuration);
-                string token = jwtProvider.GenerateEmailVerificationToken(email, "Employer");
+        //    try
+        //    {
+        //        var jwtProvider = JwtTokenProvider.GetInstance(_configuration);
+        //        string token = jwtProvider.GenerateEmailVerificationToken(email, "Employer");
 
-                return Ok(new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error generating token: {ex.Message}");
-            }
-        }
-
+        //        return Ok(new { Token = token });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Error generating token: {ex.Message}");
+        //    }
+        //}
     }
 }

@@ -11,5 +11,6 @@ namespace Jobify.Api.Service
         Task<(string Token, string Role)> LoginAsync(LoginDTO dto);
         Task<HttpResponseMessage> ChangePasswordAsync(UserChangePasswordDto dto);
         Task<HttpResponseMessage> SendPasswordResetEmailAsync(string email);
+        Task<int> GetUserIdByEmailAsync(string email);
     }
 }

@@ -12,11 +12,21 @@ namespace Jobify.BL.Security
 {
     public class JwtTokenProvider
     {
+        private static JwtTokenProvider? _instance;
         private readonly string _jwtSecret;
 
-        public JwtTokenProvider(IConfiguration configuration)
+        private JwtTokenProvider(IConfiguration configuration)
         {
             _jwtSecret = configuration["JwtSettings:Secret"] ?? throw new ArgumentNullException("JwtSettings:Secret is not configured.");
+        }
+
+        public static JwtTokenProvider GetInstance(IConfiguration configuration)
+        {
+            if (_instance == null)
+            {
+                _instance = new JwtTokenProvider(configuration);
+            }
+            return _instance;
         }
 
         public string GenerateEmailVerificationToken(string email, string role)
@@ -50,6 +60,7 @@ namespace Jobify.BL.Security
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
@@ -63,6 +74,5 @@ namespace Jobify.BL.Security
                 throw new SecurityTokenException(e.Message);
             }
         }
-
     }
 }

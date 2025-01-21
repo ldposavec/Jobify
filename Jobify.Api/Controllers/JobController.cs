@@ -12,11 +12,11 @@ namespace Jobify.Api.Controllers
     public class JobController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private JobAdRepository _jobAdRepository;
-        public JobController(IMapper mapper, JobAdRepository jobAdRepository)
+        private readonly IRepository<JobAd> _repository;
+        public JobController(IMapper mapper, IRepositoryFactory repositoryFactory)
         {
             _mapper = mapper;
-            _jobAdRepository = jobAdRepository;
+            _repository = repositoryFactory.GetRepository<IRepository<JobAd>>();
         }
 
         [HttpPost]
@@ -28,7 +28,7 @@ namespace Jobify.Api.Controllers
             }
 
             jobAd.CreatedAt = DateTime.UtcNow;
-            _jobAdRepository.Insert(jobAd);
+            _repository.Insert(jobAd);
 
             return Ok();
         }

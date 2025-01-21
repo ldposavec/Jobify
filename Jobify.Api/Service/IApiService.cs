@@ -10,5 +10,6 @@ namespace Jobify.Api.Service
         Task<HttpResponseMessage> CreateAsync<T>(T entity);
         Task<bool> UpdateAsync<T>(int id, T entity);
         Task<bool> DeleteAsync<T>(int id);
+        Task<List<T>> GetItemsByFirmIdAsync<T>(int firmId);
     }
 }

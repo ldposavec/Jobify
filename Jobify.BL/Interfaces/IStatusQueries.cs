@@ -12,6 +12,6 @@ namespace Jobify.BL.Interfaces
         void AddNewStatus(string name);
         List<Status> GetAllStatuses();
         Status GetStatusById(int id);
-        void DeleteStatus(int id);
+        //void DeleteStatus(int id);
     }
 }

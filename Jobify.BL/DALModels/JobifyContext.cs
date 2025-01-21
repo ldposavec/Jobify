@@ -30,6 +30,8 @@ public partial class JobifyContext : DbContext
 
     public virtual DbSet<Notification> Notifications { get; set; }
 
+    public virtual DbSet<Review> Reviews { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Student> Students { get; set; }
@@ -102,6 +104,11 @@ public partial class JobifyContext : DbContext
             entity.Property(e => e.Oib)
                 .HasMaxLength(11)
                 .HasColumnName("oib");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Picture).HasColumnName("picture");
+            entity.Property(e => e.AverageGrade)
+                .HasDefaultValueSql("0.0")
+                .HasColumnName("average_grade");
         });
 
         modelBuilder.Entity<JobAd>(entity =>
@@ -209,6 +216,33 @@ public partial class JobifyContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("notification_user_id_fkey");
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("review_pkey");
+
+            entity.ToTable("review");
+
+            entity.HasIndex(e => new { e.UserId, e.FirmId }, "review_user_firm_unique").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Comment).HasColumnName("comment");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.FirmId).HasColumnName("firm_id");
+            entity.Property(e => e.Grade).HasColumnName("grade");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Firm).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.FirmId)
+                .HasConstraintName("review_firm_id_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("review_user_id_fkey");
         });
 
         modelBuilder.Entity<Status>(entity =>

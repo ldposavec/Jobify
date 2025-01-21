@@ -11,9 +11,9 @@ public partial class Notification
 
     public string Message { get; set; } = null!;
 
-    public int JobAppId { get; set; }
-
     public DateTime? CreatedAt { get; set; }
+
+    public int JobAppId { get; set; }
 
     public virtual User User { get; set; } = null!;
 }

@@ -18,7 +18,16 @@
         public static class UserType
         {
             public const string Base = "api/UserType";
-        }        
+        }            
+        
+        public static class Firm
+        {
+            public const string Base = "api/Firm";
+        }          
+        public static class Review
+        {
+            public const string Base = "api/Review";
+        }
         
         public static class User
         {
@@ -26,6 +35,7 @@
             public const string Login = $"{Base}/Login";
             public const string ChangePassword = $"{Base}/ChangePassword";
             public const string SendPasswordResetEmail = $"{Base}/SendPasswordResetEmail";
+            public const string UserByMail = $"{Base}/GetByEmail";
         }
     }
 }

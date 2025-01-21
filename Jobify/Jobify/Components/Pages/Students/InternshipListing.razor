@@ -4,6 +4,8 @@
 @using Jobify.BL.Enums
 @using Jobify.BL.Providers
 @using Jobify.BL.Repositories
+@using Jobify.BL.Builders
+@using MimeKit
 
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="4000" StackLength="3" Placement="ToastsPlacement.BottomRight" />
 <ConfirmDialog @ref="dialog" />
@@ -37,28 +39,28 @@ else
     </div> *@
     <div class="card-deck">
         <div class="row">
-    @foreach (var job in jobAds.Where(j => j.StatusId == 4))
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@job.Title</h5>
-                    <p class="card-text">
-                        @TruncateText(job.Description, 25)
-                        <button class="btn btn-outline-warning" @onclick="() => OpenDescriptionModal(job.Description)">
-                            Read More
-                        </button>
-                    </p>
-                    <hr />
-                    <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
-                    <button class="btn btn-primary" @onclick="() => ShowJobDetails(job)">Apply</button>
+            @foreach (var job in jobAds.Where(j => j.StatusId == 4))
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@job.Title</h5>
+                            <p class="card-text">
+                                @TruncateText(job.Description, 25)
+                                <button class="btn btn-outline-warning" @onclick="() => OpenDescriptionModal(job.Description)">
+                                    Read More
+                                </button>
+                            </p>
+                            <hr />
+                            <p class="card-text"><strong>Salary:</strong> @job.Salary€</p>
+                            <button class="btn btn-primary" @onclick="() => ShowJobDetails(job)">Apply</button>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">@GetTimeSinceUpload(job.Id)</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">@GetTimeSinceUpload(job.Id)</small>
-                </div>
-            </div>
-        </div>
-    }
+            }
         </div>
     </div>
 }
@@ -201,19 +203,66 @@ else
             return;
         }
 
-        var jobApp = new JobApp()
-            {
-                JobAdId = selectedJob.Id,
-                StudentId = id,
-                CreatedAt = DateTime.Now,
-                CvFilepath = uploadedCvPath,
-                StatusId = (int)StatusEnum.Pending
-            };
+        // var jobApp = new JobApp()
+        //     {
+        //         JobAdId = selectedJob.Id,
+        //         StudentId = id,
+        //         CreatedAt = DateTime.Now,
+        //         CvFilepath = uploadedCvPath,
+        //         StatusId = (int)StatusEnum.Pending
+        //     };
+        var jobApp = new JobAppBuilder.Builder()
+            .WithJobAdId(selectedJob.Id)
+            .WithStudentId(id)
+            .WithCreatedAt(DateTime.Now)
+            .WithCvFilepath(uploadedCvPath)
+            .WithStatusId((int)StatusEnum.Pending)
+            .Build();
+
+        Console.WriteLine(jobApp.ToString());
+
+        var jobAppClone = jobApp.Clone();
+
+        jobAppClone.CreatedAt = DateTime.Now.AddDays(2);
+        Console.WriteLine(jobAppClone.ToString());
 
         DbQueryProvider.Service.AddNewJobApp(selectedJob.Id, id, DateTime.Now, uploadedCvPath, (int)StatusEnum.Pending);
         // await JSRuntime.InvokeVoidAsync("alert", $"You have successfully applied for job with ID {selectedJob.Id}!");
         messages.Add(CreateToastMessage(ToastType.Success, "You have successfully applied for the job!"));
+        SendEmail();
         HideModal();
+    }
+
+    private void SendEmail()
+    {
+        Console.WriteLine("Sending email...");
+        // string email = "jobify0@gmail.com";
+        // try
+        // {
+        //     var message = new MimeMessage();
+        //     message.From.Add(new MailboxAddress("Jobify Mail", "jobifyTest@gmail.com"));
+        //     message.To.Add(new MailboxAddress("Job", email));
+        //     message.Subject = "Test Email via MailKit";
+
+        //     message.Body = new TextPart("plain")
+        //         {
+        //             Text = "Hello! This is a test email using MailKit."
+        //         };
+
+        //     using (var client = new MailKit.Net.Smtp.SmtpClient())
+        //     {
+        //         client.Connect("smtp.gmail.com", 587, false);
+        //         client.Authenticate(email, "super12345password");
+        //         client.Send(message);
+        //         client.Disconnect(true);
+        //     }
+
+        //     Console.WriteLine("Email sent successfully!");
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine(ex.Message);
+        // }
     }
 
     private string GetTimeSinceUpload(int jobId)

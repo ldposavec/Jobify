@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Jobify.Api.DTOs;
+using Jobify.Api.Service;
 using Jobify.BL.DALModels;
 using Jobify.BL.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +13,11 @@ namespace Jobify.Api.Controllers
     public class UserTypeController : ControllerBase
     {
         private readonly IRepository<UserType> _repository;
-        private readonly IMapper _mapper;
-        public UserTypeController(IRepositoryFactory repositoryFactory, IMapper mapper)
+        private readonly IUserTypeAdapter _adapter;
+        public UserTypeController(IRepositoryFactory repositoryFactory, IUserTypeAdapter adapter)
         {
-            _repository = repositoryFactory.GetRepository<IRepository<UserType>>(); ;
-            _mapper = mapper;
+            _repository = repositoryFactory.GetRepository<IRepository<UserType>>();
+            _adapter = adapter;
         }
 
         // GET: api/<UserTypeController>
@@ -26,7 +27,7 @@ namespace Jobify.Api.Controllers
             try
             {
                 var userTypes = _repository.GetAll();
-                var userTypeDtos = _mapper.Map<IEnumerable<UserTypeDTO>>(userTypes);
+                var userTypeDtos = _adapter.ToDTOList(userTypes);
                 return Ok(userTypeDtos);
             }
             catch (Exception ex)
